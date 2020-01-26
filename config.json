@@ -1,0 +1,14 @@
+{
+    "title":"Coming to America",
+    "company_name":"Soul Glo",
+    "config":{
+        "employees":"config/employees.json",
+        "name_dict":"config/general/names.txt",
+        "email_script":"config/general/script_censored.txt",
+        "email_template":"config/general/templates/email_jinja_template.txt",
+        "email_reply_template":"config/general/templates/email_reply_jinja_template.txt",
+        "domain_list":"config/general/domains.txt",
+        "external_hosts":"config/general/external_hosts.txt",
+        "output_dir":"output/"
+    }
+}
