@@ -1,8 +1,9 @@
+import os
+import random
+
 from jinja2 import Template
 from datetime import datetime
 from datetime import timedelta
-import random
-
 
 from utils import *
 from emails.make_mail import gen_email_log
@@ -43,16 +44,27 @@ def gen_email_addr():
 def gen_emails(num=3):
     """Generate fake emails"""
     mail_log = []
+    output_path = maker_config.config["output_dir"]
+
+    email_log_filename = os.path.join(output_path, "emails", "mail_logs.json")
+    email_file_dir = os.path.join(output_path, "emails", "files")
+    # create the email output directory if it doesn't already exist
+    if not os.path.exists(email_file_dir):
+        os.makedirs(email_file_dir)
 
     for i in range(num):
         sender = gen_email_addr()
         recipient = random.choice(hosts)["email_addr"]
         result = gen_email_log(date_time, sender_domains, sender, recipient, corpus)
         mail_log.append(result)
+        
+        # write the email to file
+        with open(email_log_filename, 'a') as f:
+            f.write(json.dumps(result))
 
     for email in mail_log:
-        output_path = maker_config.config["output_dir"]
-        create_email_obj(email, corpus, template_obj, output_path)
+        if email['result'] != "Blocked":
+            create_email_obj(email, corpus, template_obj, email_file_dir)
 
     
 

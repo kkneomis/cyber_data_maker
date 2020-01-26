@@ -91,9 +91,7 @@ def create_email_obj(email, corpus, template_obj, output_path):
                         recipient = email['recipient'],
                         subject = email['subject'])        
 
-    print output_path
     filename = os.path.join(output_path, email['filename'])
-    print filename
     # write the email to file
     with open(filename, 'w+') as f:
        f.write(content)
