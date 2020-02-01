@@ -8,6 +8,7 @@ from datetime import timedelta
 from utils import *
 from emails.make_mail import gen_email_log
 from emails.make_mail import create_email_obj
+from outbound_browsing.make_outbound_traffic import OutboundEvent
 
 
 maker_config = load_json_config("config.json")
@@ -32,6 +33,9 @@ with open('config/general/script_censored.txt') as f:
 with open('config/general/templates/email_jinja_template.txt') as f:
     template_text = f.read()
 
+with open('config/general/external_hosts.txt', 'r') as f: 
+    endpoints = f.read().splitlines()
+
 template_obj = Template(template_text)
 
 
@@ -42,16 +46,23 @@ def gen_email_addr():
 
 
 def gen_emails(num=3):
-    """Generate fake emails"""
+    """
+    Generate a log of background email activity 
+    Emails are either accepted or blocked
+    Generate email files for accepted emails the logs
+    """
     mail_log = []
     output_path = maker_config.config["output_dir"]
 
+    # output dictories for the logs and email fiels
     email_log_filename = os.path.join(output_path, "emails", "mail_logs.json")
     email_file_dir = os.path.join(output_path, "emails", "files")
+
     # create the email output directory if it doesn't already exist
     if not os.path.exists(email_file_dir):
         os.makedirs(email_file_dir)
 
+    # creating {num} number of emails and adding the mail log
     for i in range(num):
         sender = gen_email_addr()
         recipient = random.choice(hosts)["email_addr"]
@@ -62,17 +73,19 @@ def gen_emails(num=3):
         with open(email_log_filename, 'a') as f:
             f.write(json.dumps(result))
 
+    # generate email files
     for email in mail_log:
+        # we are only generating files for accepted emails
         if email['result'] != "Blocked":
             create_email_obj(email, corpus, template_obj, email_file_dir)
 
-    
 
-    
-
-def gen_browsing():
+def gen_browsing(num):
     """Generate fake web browsing traffic"""
-    pass
+    for i in range(num):
+        new_event = OutboundEvent(date_time, hosts, endpoints)
+        print new_event.get_event()
+       
 
 def gen_web_server_data():
     """Generate web server logs"""
@@ -87,4 +100,5 @@ def inject_malicious_traffic():
     pass
 
 
-gen_emails()
+#gen_emails()
+gen_browsing(10)
