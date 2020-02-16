@@ -12,6 +12,51 @@ from utils import *
     
 date_time = datetime(1988, 6, 29, 8, 00, 00)
 
+class Email:
+
+    def __init__(self, date_time, sender_domains, sender, 
+                recipient, corpus, result=None, subject=None, link=None):
+
+        self.time = date_time.strftime("%a %b %d %H:%M:%S %Y")
+        self.body = generate_text(corpus, 20)
+        
+        self.hash = self.get_hash()
+        self.sender = sender
+        self.recipient = recipient
+        self.filename = filename =  "email_%s" % self.hash.hexdigest() 
+        self.link = link
+        if not result:
+            self.result = random.choice(["Accepted", "Blocked"])
+        else:
+            self.result = result
+
+        if not subject:
+            self.subject = generate_text(corpus, 7)
+        else:
+            self.subject = subject
+
+        if not link:
+            self.link = "https://google.com"
+        else:
+            self.link = link
+        
+    def stringify(self):
+        """return json object with email attributes"""
+        return {
+                    "event_time": self.time,
+                    "sender": self.sender,
+                    "recipient": self.recipient,
+                    "filename": self.filename,
+                    "subject": self.subject,
+                    "result": self.result,
+                    "link":self.link
+                  }
+
+    def get_hash(self):
+        hash = hashlib.sha1()
+        hash.update(str(self.time))
+        return hash
+
     
 def generate_text(corpus, length):
     """
@@ -38,44 +83,6 @@ def generate_text(corpus, length):
 
     return final_text
 
-
-def gen_email_log(date_time, sender_domains, sender, recipient, corpus):
-    """
-    Takes in a time, sender, and recipient
-    Returns a list for dicts representing an email received
-    """        
-    # generate this on the fly using datetime functions similar to other scripts
-    date_time = date_time + timedelta(seconds=random.randint(200, 3000))
-    time = date_time.strftime("%a %b %d %H:%M:%S %Y")
-
-    # get this from the list of active company employess
-
-    body = generate_text(corpus, 20)
-    subject = generate_text(corpus, 7)
-
-    # create a hash of the datetime for message naming
-    hash = hashlib.sha1()
-    hash.update(str(time))
-    filename =  "email_%s" % hash.hexdigest()
-
-    result = random.choice(["Accepted", "Blocked"])
-   
-
-    # write the email to file
-    # with open(filename, 'w') as f:
-    #    f.write(content)
-
-    # cache the method in a json object for replies
-    cur_message = {
-                    "event_time": time,
-                    "sender":sender,
-                    "recipient":recipient,
-                    "filename":filename,
-                    "subject":subject,
-                    "result": result
-                  }
-                
-    return cur_message
 
 
 def create_email_obj(email, corpus, template_obj, output_path):
