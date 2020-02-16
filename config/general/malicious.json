@@ -1,0 +1,22 @@
+{
+    "sender":"bob@microsooft.info",
+    "blocked_subjects": [
+        "Microsoft account recovery message",
+        "A new deal in the Microsoft store",
+        "New login from suspicious location",
+        "XBOX or PS4?"
+    ],
+    "accepted_subjects":[
+        "Reset your password"
+    ],
+    "links":[
+        {
+            "url":"win-dows.info/reset/aWRpb3Q",
+            "ip":"51.231.231.2"
+        },
+        {
+            "url":"win-dows.info/recoveri/d2lubmluZw",
+            "ip":"51.231.231.2"
+        }
+    ]
+}
