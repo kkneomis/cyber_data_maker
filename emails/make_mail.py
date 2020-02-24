@@ -36,7 +36,7 @@ class Email:
             self.subject = subject
 
         if not link:
-            self.link = "https://google.com"
+            self.link = gen_link(corpus)
         else:
             self.link = link
         
@@ -84,6 +84,21 @@ def generate_text(corpus, length):
     return final_text
 
 
+def gen_link(corpus):
+    """Generate random strings of three words for dummy url"""
+    # thanks to: https://www.geeksforgeeks.org/python-remove-all-characters-except-letters-and-numbers/
+    import re
+    pre = random.choice(["http://",
+                        "https://",
+                        "www.", 
+                        "http://wwww.",
+                        "https://www.", ""])
+    tld = random.choice([".com", ".org", ".net", ".biz", ".co", ".co.uk"])
+    ini_string = generate_text(corpus, 3)
+    domain = re.sub('[\W_]+', '', ini_string).lower()
+    link = pre + domain + tld
+    return link
+    
 
 def create_email_obj(email, corpus, template_obj, output_path):
     """
@@ -96,7 +111,8 @@ def create_email_obj(email, corpus, template_obj, output_path):
                         sender = email['sender'],
                         time = email['event_time'],
                         recipient = email['recipient'],
-                        subject = email['subject'])        
+                        subject = email['subject'],
+                        link= email['link'])        
 
     filename = os.path.join(output_path, email['filename'])
     # write the email to file
