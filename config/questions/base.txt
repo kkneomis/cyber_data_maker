@@ -1,0 +1,24 @@
+Title: {{title}}
+
+You are are a cybsecurity analyst for {{ company }}. Company {{ description }}.
+
+Question 1
+
+Several users reported having received suspicious emails from {{ malicious_sender }}. How many emails did this person send to your organizations?
+
+Question 2
+
+Some of these email were blocked by your spam filters. How many emails from this sender were delivered to users?
+
+Question 3
+
+What domains were used in the links contained in these suspicious emails?
+
+Question 4
+
+Which users clicked on these links?
+
+Question 5
+
+Which IP addresses were asssociated with these links?
+

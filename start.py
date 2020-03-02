@@ -22,6 +22,9 @@ employees = maker_config.config["employees"]
 date_time = datetime(2020, 6, 29, 8, 00, 00)
 
 
+with open('config/changeme/challenge_meta.json') as f:
+    challenge_info = json.loads(f.read())
+
 # load up the company's employees
 with open('config/changeme/employees.json') as f:
     hosts = json.loads(f.read())
@@ -236,6 +239,26 @@ def set_up_output_dir():
     print('Created a new output dir')
 
 
+def make_questions():
+    """Generate question set""" 
+    with open('config/questions/base.txt') as f:
+        text = f.read()
+        template = Template(text)
+
+    title = challenge_info["title"]
+    company = challenge_info["title"]
+    description = challenge_info["description"]
+    malicious_sender = mal_config["sender"]
+
+    content =  template.render(title = title,
+                               company = company,
+                               description = description,
+                               malicious_sender = malicious_sender)
+
+    with open('output/prompt.txt', 'w+') as f:
+        f.write(content)
+
+
 
 set_up_output_dir()
 gen_emails(100)
@@ -243,3 +266,4 @@ gen_browsing(1000)
 inject_malicious_traffic()
 write_browsing()
 write_email()
+make_questions()
