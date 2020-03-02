@@ -1,11 +1,12 @@
 import random 
+import string
 
 METHODS = ["GET"]
 STATUS_CODES = ["202", "301", "302", "404", "403"]
 
 class OutboundEvent:
         
-    def __init__(self, time, hosts, endpoints, user=None, endpoint=None):
+    def __init__(self, time, hosts, endpoints, user=None, endpoint=None, request=None):
         """Set initial values"""
         self.time = time
         self.hosts = hosts
@@ -19,10 +20,17 @@ class OutboundEvent:
             self.current_endpoint = endpoint
         else:
             self.set_new_endpoint()
+
+        if request:
+            self.request = request
+        else:
+            self.set_request()
             
-        self.src_addr = self.current_user["ip_addr"]
+        self.src_ip = self.current_user["ip_addr"]
         self.user_agent = self.current_user["user_agent"]
-        self.url = self.current_endpoint
+        self.url = self.current_endpoint.split("/")[0]
+        self.dst_ip  = self.current_endpoint.split("/")[1]
+        self.dst_ip
         self.set_method()
         self.set_status_code()
 
@@ -59,6 +67,16 @@ class OutboundEvent:
     
     def stringify(self):
         """Print the data in one convinient line"""
-        logline = "%s %s %s %s %s" % (self.time, self.method, self.src_addr, self.url, self.user_agent)
+        logline = ' '.join([str(x) for x in [self.time, self.method, self.src_ip, self.url, self.request, self.dst_ip, self.user_agent]])
 
         return logline
+
+
+    def set_request(self, stringLength=10):
+        """
+        Generate a random string of fixed length 
+        thanks to: https://pynative.com/python-generate-random-string/
+        """
+        letters = string.ascii_lowercase
+        extension = random.choice(['.html', '.js', '.css', '.png', '.jpg', '.exe', '.docx', '.xls', ''])
+        self.request = ''.join(random.choice(letters) for i in range(stringLength)) + extension

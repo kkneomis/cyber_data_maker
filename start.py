@@ -1,5 +1,7 @@
 import os
+import shutil
 import random
+import copy
 
 from jinja2 import Template
 from datetime import datetime
@@ -21,8 +23,14 @@ date_time = datetime(2020, 6, 29, 8, 00, 00)
 
 
 # load up the company's employees
-with open('config/employees.json') as f:
+with open('config/changeme/employees.json') as f:
     hosts = json.loads(f.read())
+
+with open('config/changeme/malicious.json', 'r') as f: 
+    mal_config = json.loads(f.read())
+
+with open('config/changeme/corpus.txt') as f:
+    corpus  = f.read()
     
 # load up the fake email senders
 with open('config/general/names.txt') as f:
@@ -31,8 +39,6 @@ with open('config/general/names.txt') as f:
 with open('config/general/domains.txt') as f:
     sender_domains = f.readlines()
 
-with open('config/general/script_censored.txt') as f:
-    corpus  = f.read()
 
 with open('config/general/templates/email_jinja_template.txt') as f:
     template_text = f.read()
@@ -40,8 +46,7 @@ with open('config/general/templates/email_jinja_template.txt') as f:
 with open('config/general/external_hosts.txt', 'r') as f: 
     endpoints = f.readlines()
 
-with open('config/general/malicious.json', 'r') as f: 
-    mal_config = json.loads(f.read())
+
 
 #template_obj = Template(template_text)
 TEMPLATE_OBJ = Template(template_text)
@@ -96,8 +101,8 @@ def gen_emails(num=3):
 
 def inject_malicious_email(time):
     """Generate emails from malicious senders"""
-    # creating {num} number of emails and adding the mail log
 
+    # creating {num} number of emails and adding the mail log
     sender = mal_config["sender"]
     result = random.choice(["Accepted", "Blocked"])
 
@@ -161,18 +166,21 @@ def inject_malicious_traffic():
             #and event["result"] == "Accepted"
             user = get_user_from_email(event["recipient"])
             link = event["link"]
-            domain = link.split("//")[-1].split("/")[0].split('?')[0]
+            parsed_link = link.split("//")[-1].split("/")
+            domain = parsed_link[0].split('?')[0]
+            request = '/'.join(parsed_link[1:])
             ip = get_link_ip(link)
             time = parse(event["event_time"]) + timedelta(seconds=random.randint(0, 100))
             endpoint = "%s/ %s" % (domain, ip)
             new_event = OutboundEvent(time, hosts, endpoints, 
-                                     user=user, endpoint=endpoint).stringify()
+                                     user=user, endpoint=endpoint, request=request).stringify()
             WEB_EVENTS.append(new_event)
 
 
 
 
 def write_browsing():
+    """Write web browsing events to file"""
     outbound_browsing_log_filename = os.path.join(OUTPUT_PATH, "weblog.txt")
     with open(outbound_browsing_log_filename, 'w+') as f:
         for event in WEB_EVENTS:
@@ -180,10 +188,13 @@ def write_browsing():
             f.write("\n")
 
 def write_email():
-    """ write the email to file """
+    """ 
+    write json email objects to file 
+    write full email bodies to files
+    """
     # output dictories for the logs and email fiels
     email_log_filename = os.path.join(OUTPUT_PATH, "mail_logs.json")
-    email_file_dir = os.path.join(OUTPUT_PATH, "emails", "files")
+    email_file_dir = os.path.join(OUTPUT_PATH, "emails")
 
     # create the email output directory if it doesn't already exist
     if not os.path.exists(email_file_dir):
@@ -191,13 +202,22 @@ def write_email():
 
     with open(email_log_filename, 'a') as f:
         for email in MAIL_LOG:
-            f.write(json.dumps(email))
+            # we don't want to print the link in the json email log
+            # but we need it for other things
+            # so make a close instead and delete the link key from the dict
+            email_tmp = copy.deepcopy(email)
+            del email_tmp['link']
+            f.write(json.dumps(email_tmp))
+            f.write("\n")
 
     # generate email files
     for email in MAIL_LOG:
         # we are only generating files for accepted emails
         if email['result'] != "Blocked":
-            create_email_obj(email, corpus, TEMPLATE_OBJ, email_file_dir)
+            content = create_email_obj(email, corpus, TEMPLATE_OBJ, email_file_dir)
+            email_filename = os.path.join(email_file_dir, email['filename'])
+            with open(email_filename, 'w+') as f:
+                f.write(content)
 
     
 #def gen_web_server_data():
@@ -205,7 +225,19 @@ def write_email():
 #    pass
 
 
+def set_up_output_dir():
+    """
+    Remove output folder if exists
+    Create a new one
+    """
+    shutil.rmtree('output')
+    print('Removed existing output dir')
+    os.mkdir('output')
+    print('Created a new output dir')
 
+
+
+set_up_output_dir()
 gen_emails(100)
 gen_browsing(1000)
 inject_malicious_traffic()

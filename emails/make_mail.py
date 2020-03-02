@@ -19,10 +19,10 @@ class Email:
 
         self.time = date_time.strftime("%a %b %d %H:%M:%S %Y")
         self.body = generate_text(corpus, 20)
-        
-        self.hash = self.get_hash()
         self.sender = sender
         self.recipient = recipient
+        self.hash = self.get_hash()
+        
         self.filename = filename =  "email_%s" % self.hash.hexdigest() 
         self.link = link
         if not result:
@@ -54,7 +54,7 @@ class Email:
 
     def get_hash(self):
         hash = hashlib.sha1()
-        hash.update(str(self.time))
+        hash.update(str(self.time) + self.sender)
         return hash
 
     
@@ -95,6 +95,7 @@ def gen_link(corpus):
                         "https://www.", ""])
     tld = random.choice([".com", ".org", ".net", ".biz", ".co", ".co.uk"])
     ini_string = generate_text(corpus, 3)
+    # remove non-alphanumeracal characters
     domain = re.sub('[\W_]+', '', ini_string).lower()
     link = pre + domain + tld
     return link
@@ -114,9 +115,6 @@ def create_email_obj(email, corpus, template_obj, output_path):
                         subject = email['subject'],
                         link= email['link'])        
 
-    filename = os.path.join(output_path, email['filename'])
-    # write the email to file
-    with open(filename, 'w+') as f:
-       f.write(content)
+    return content
 
 
