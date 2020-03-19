@@ -18,7 +18,7 @@ It is your responsibility to make sure that the story makes sense at the end of 
 Run the start file to get started
 
 ```
-$ python start.py
+$ ./start.sh
 ```
 
 The resulting data will be in the `output/` folder

@@ -29,8 +29,7 @@ class OutboundEvent:
         self.src_ip = self.current_user["ip_addr"]
         self.user_agent = self.current_user["user_agent"]
         self.url = self.current_endpoint.split("/")[0]
-        self.dst_ip  = self.current_endpoint.split("/")[1]
-        self.dst_ip
+        self.dst_ip  = self.current_endpoint.split("/")[1].strip()
         self.set_method()
         self.set_status_code()
 

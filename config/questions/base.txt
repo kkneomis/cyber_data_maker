@@ -1,6 +1,8 @@
 Title: {{title}}
 
-You are are a cybsecurity analyst for {{ company }}. Company {{ description }}.
+You are are a cybersecurity analyst for {{ company }}. Company {{ description }}.
+
+Part 2
 
 Question 1
 
@@ -22,3 +24,12 @@ Question 5
 
 Which IP addresses were asssociated with these links?
 
+Part 2
+
+It turns out that the downloaded files were ransomware! 0_0
+Your company's files have all been encrypted until you send the hackers 50 bitccoins. 
+
+Fortunately, the hackers forgot their keys in a "malware" folder provided. There are four key provided in zipped folders. 
+You must do some deobfuscation to get the key that will decrypt your data. Each key can be used to unzip the folder containing the next key.
+
+Good luck!

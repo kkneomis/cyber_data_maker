@@ -32,20 +32,23 @@ with open('config/changeme/employees.json') as f:
 with open('config/changeme/malicious.json', 'r') as f: 
     mal_config = json.loads(f.read())
 
+# body of text used to generate emails and other goodies
 with open('config/changeme/corpus.txt') as f:
     corpus  = f.read()
     
-# load up the fake email senders
+# load up the fake email sender names
 with open('config/general/names.txt') as f:
     sender_names = f.readlines()
-    
+
+# domains for fake email sender
 with open('config/general/domains.txt') as f:
     sender_domains = f.readlines()
 
-
+# email templates to be populated
 with open('config/general/templates/email_jinja_template.txt') as f:
     template_text = f.read()
 
+# dummy websites that users visit
 with open('config/general/external_hosts.txt', 'r') as f: 
     endpoints = f.readlines()
 
@@ -173,6 +176,10 @@ def inject_malicious_traffic():
             domain = parsed_link[0].split('?')[0]
             request = '/'.join(parsed_link[1:])
             ip = get_link_ip(link)
+            if not ip:
+                # this was a made up email domain. it is not mapped to an IP in our file of domains
+                # give it a fake IP on the spot 
+                ip = ".".join(map(str, (random.randint(0, 255)  for _ in range(4))))
             time = parse(event["event_time"]) + timedelta(seconds=random.randint(0, 100))
             endpoint = "%s/ %s" % (domain, ip)
             new_event = OutboundEvent(time, hosts, endpoints, 
@@ -222,7 +229,8 @@ def write_email():
             with open(email_filename, 'w+') as f:
                 f.write(content)
 
-    
+
+
 #def gen_web_server_data():
 #    """Generate web server logs"""
 #    pass
@@ -234,13 +242,20 @@ def set_up_output_dir():
     Create a new one
     """
     shutil.rmtree('output')
-    print('Removed existing output dir')
+    print('Removed existing output dir...')
     os.mkdir('output')
-    print('Created a new output dir')
+    print('Created a new output dir...')
+
+def add_employee_data():
+    """Add employee info to the output"""
+    print("Adding employee info to output....")
+    with open('output/employees.json', 'w+') as f:
+        f.write(json.dumps(hosts, indent=4))
 
 
 def make_questions():
     """Generate question set""" 
+    print("Generating questions....")
     with open('config/questions/base.txt') as f:
         text = f.read()
         template = Template(text)
@@ -267,3 +282,4 @@ inject_malicious_traffic()
 write_browsing()
 write_email()
 make_questions()
+add_employee_data()
