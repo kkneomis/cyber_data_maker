@@ -15,7 +15,8 @@ date_time = datetime(1988, 6, 29, 8, 00, 00)
 class Email:
 
     def __init__(self, date_time, sender_domains, sender, 
-                recipient, corpus, result=None, subject=None, link=None):
+                recipient, corpus, result=None, subject=None, link=None,
+                reply_to=None):
 
         self.time = date_time.strftime("%a %b %d %H:%M:%S %Y")
         self.body = generate_text(corpus, 20)
@@ -39,12 +40,18 @@ class Email:
             self.link = gen_link(corpus)
         else:
             self.link = link
+
+        if not reply_to:
+            self.reply_to = sender
+        else:
+            self.reply_to = reply_
         
     def stringify(self):
         """return json object with email attributes"""
         return {
                     "event_time": self.time,
                     "sender": self.sender,
+                    "reply_to": self.reply_to,
                     "recipient": self.recipient,
                     "filename": self.filename,
                     "subject": self.subject,
@@ -103,13 +110,14 @@ def gen_link(corpus):
 
 def create_email_obj(email, corpus, template_obj, output_path):
     """
-    Given a list of json objects
-    create email files with messages in the output folder
+    Given a json email object
+    create generate an email message
     Corpus is the body of text used to generate the emails
     """
     t = template_obj
     content =  t.render(body = generate_text(corpus, 100),
                         sender = email['sender'],
+                        reply_to = email['reply_to'],
                         time = email['event_time'],
                         recipient = email['recipient'],
                         subject = email['subject'],

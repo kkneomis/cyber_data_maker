@@ -1,5 +1,5 @@
 From {{ sender }} {{ time }}
-Reply-to: {{ sender }}
+Reply-to: {{ reply_to }}
 From: {{ sender }}
 Sent: {{ time }}
 To: {{ recipient }}

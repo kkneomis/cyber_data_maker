@@ -1,5 +1,11 @@
 {
-    "sender":"bob@microsooft.info",
+    "senders":[
+        "bob@microsooft.info",
+        "jenny@go0glee.com"
+    ],
+    "reply_to":[
+        "cruftycookies@gmail.com"
+    ],
     "blocked_subjects": [
         "Microsoft account recovery message",
         "A new deal in the Microsoft store",

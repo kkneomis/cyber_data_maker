@@ -89,7 +89,7 @@ def gen_emails(num=3):
         global MALICIOUS_EMAIL_COUNT
         if malicious <= .2 and MALICIOUS_EMAIL_COUNT > 0:
             # generate a targeted malicious email
-            inject_malicious_email(time)
+            inject_malicious_emails(time)
             MALICIOUS_EMAIL_COUNT -= 1
         else:
             # otherwise generate noise email
@@ -105,12 +105,13 @@ def gen_emails(num=3):
     
 
 
-def inject_malicious_email(time):
+def inject_malicious_emails(time):
     """Generate emails from malicious senders"""
 
     # creating {num} number of emails and adding the mail log
-    sender = mal_config["sender"]
+    sender = random.choice(mal_config["senders"])
     result = random.choice(["Accepted", "Blocked"])
+    reply_to = random.choice(mal_config["reply_to"])
 
     if result == "Accepted":
         # generate accepted emails
@@ -118,7 +119,7 @@ def inject_malicious_email(time):
         subject = random.choice(mal_config["accepted_subjects"])
         link = random.choice(mal_config["links"])["url"]
         new_mail = Email(time, sender_domains, sender, recipient, corpus, 
-                        result="Accepted", subject=subject, link=link)
+                        result="Accepted", subject=subject, link=link, reply_to=reply_to)
         MAIL_LOG.append(new_mail.stringify())
     else:
         # generate blocked emails
@@ -126,7 +127,7 @@ def inject_malicious_email(time):
         subject = random.choice(mal_config["blocked_subjects"])
         link = random.choice(mal_config["links"])["url"]
         new_mail = Email(time, sender_domains, sender, recipient, corpus,
-                             result="Blocked", subject=subject, link=link)
+                             result="Blocked", subject=subject, link=link, reply_to=reply_to)
         MAIL_LOG.append(new_mail.stringify())
 
 
@@ -178,7 +179,7 @@ def inject_malicious_traffic():
             ip = get_link_ip(link)
             if not ip:
                 # this was a made up email domain. it is not mapped to an IP in our file of domains
-                # give it a fake IP on the spot 
+                # give it a fake IP on the spot
                 ip = ".".join(map(str, (random.randint(0, 255)  for _ in range(4))))
             time = parse(event["event_time"]) + timedelta(seconds=random.randint(0, 100))
             endpoint = "%s/ %s" % (domain, ip)
@@ -263,7 +264,7 @@ def make_questions():
     title = challenge_info["title"]
     company = challenge_info["title"]
     description = challenge_info["description"]
-    malicious_sender = mal_config["sender"]
+    malicious_sender = random.choice(mal_config["senders"])
 
     content =  template.render(title = title,
                                company = company,
