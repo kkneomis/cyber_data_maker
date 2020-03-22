@@ -2,6 +2,7 @@ import os
 import shutil
 import random
 import copy
+import json
 
 from jinja2 import Template
 from datetime import datetime
@@ -9,16 +10,12 @@ from dateutil.parser import parse
 from datetime import timedelta
 from tqdm import tqdm
 
-from utils import *
-from emails.make_mail import Email
-from emails.make_mail import create_email_obj
-from outbound_browsing.make_outbound_traffic import OutboundEvent
-from clock.clock import Clock
+from modules.emails.make_mail import Email
+from modules.emails.make_mail import create_email_obj
+from modules.outbound_browsing.make_outbound_traffic import OutboundEvent
+from modules.clock.clock import Clock
 
-
-maker_config = load_json_config("config.json")
-employees = maker_config.config["employees"]
-
+employees = "config/employees.json"
 
 date_time = datetime(2020, 6, 29, 8, 00, 00)
 
@@ -30,6 +27,7 @@ with open('config/changeme/challenge_meta.json') as f:
 with open('config/changeme/employees.json') as f:
     hosts = json.loads(f.read())
 
+# config for the adversary data
 with open('config/changeme/malicious.json', 'r') as f: 
     mal_config = json.loads(f.read())
 
@@ -66,7 +64,7 @@ def gen_email_addr():
     domain = random.choice(sender_domains).strip()
     return "%s@%s"% (name, domain)
 
-OUTPUT_PATH = maker_config.config["output_dir"]
+OUTPUT_PATH = "output/"
 if not os.path.exists(OUTPUT_PATH):
     os.makedirs(OUTPUT_PATH)
 
@@ -76,7 +74,6 @@ def gen_emails(num=3):
     Emails are either accepted or blocked
     Generate email files for accepted emails the logs
     """
-
     clock = Clock(start=date_time, interval=3000)
     
     # creating {num} number of emails and adding the mail log
@@ -132,7 +129,6 @@ def inject_malicious_emails(time):
         MAIL_LOG.append(new_mail.stringify())
 
 
-
 def gen_browsing(num):
     """Generate fake web browsing traffic"""
     clock = Clock(start=date_time, interval=400)
@@ -144,7 +140,6 @@ def gen_browsing(num):
         WEB_EVENTS.append(new_event)
 
         clock.tick()
-
 
 
 def inject_malicious_traffic():
@@ -190,8 +185,6 @@ def inject_malicious_traffic():
             WEB_EVENTS.append(new_event)
 
 
-
-
 def write_browsing():
     """Write web browsing events to file"""
     outbound_browsing_log_filename = os.path.join(OUTPUT_PATH, "weblog.txt")
@@ -199,6 +192,7 @@ def write_browsing():
         for event in WEB_EVENTS:
             f.write(event)
             f.write("\n")
+
 
 def write_email():
     """ 
