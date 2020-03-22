@@ -7,7 +7,6 @@ import random
 import nltk
 import json 
 import hashlib
-from utils import *
 
     
 date_time = datetime(1988, 6, 29, 8, 00, 00)
