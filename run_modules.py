@@ -7,6 +7,7 @@ from jinja2 import Template
 from datetime import datetime
 from dateutil.parser import parse
 from datetime import timedelta
+from tqdm import tqdm
 
 from utils import *
 from emails.make_mail import Email
@@ -79,8 +80,8 @@ def gen_emails(num=3):
     clock = Clock(start=date_time, interval=3000)
     
     # creating {num} number of emails and adding the mail log
-    for i in range(num):
-        
+    print("Generating email objects...")
+    for i in tqdm(range(num)):
         time = clock.get_time()
         # generate a random float to represent probably of malicious email
         # 20% of the time, make the email malicious targeted
@@ -134,9 +135,10 @@ def inject_malicious_emails(time):
 
 def gen_browsing(num):
     """Generate fake web browsing traffic"""
-    
     clock = Clock(start=date_time, interval=400)
-    for i in range(num):
+    
+    print("Generating %s web browsing evants..." % num)
+    for i in tqdm(range(num)):
         time = clock.get_time()
         new_event = OutboundEvent(time, hosts, endpoints).stringify()
         WEB_EVENTS.append(new_event)
@@ -222,7 +224,8 @@ def write_email():
             f.write("\n")
 
     # generate email files
-    for email in MAIL_LOG:
+    print("Generating email files...")
+    for email in tqdm(MAIL_LOG):
         # we are only generating files for accepted emails
         if email['result'] != "Blocked":
             content = create_email_obj(email, corpus, TEMPLATE_OBJ, email_file_dir)

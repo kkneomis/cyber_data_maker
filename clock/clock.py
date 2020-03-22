@@ -18,4 +18,4 @@ class Clock:
         return self.current_time
 
     def print_time(self):
-        print "<Current time is... %s>" % self.current_time
+        print("<Current time is... %s>" % self.current_time)

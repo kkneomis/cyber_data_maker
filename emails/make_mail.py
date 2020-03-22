@@ -44,7 +44,7 @@ class Email:
         if not reply_to:
             self.reply_to = sender
         else:
-            self.reply_to = reply_
+            self.reply_to = reply_to
         
     def stringify(self):
         """return json object with email attributes"""
@@ -60,8 +60,8 @@ class Email:
                   }
 
     def get_hash(self):
-        hash = hashlib.sha1()
-        hash.update(str(self.time) + self.sender)
+        val = str(self.time) + self.sender
+        hash = hashlib.sha1(str(val).encode('utf-8'))
         return hash
 
     
@@ -84,7 +84,7 @@ def generate_text(corpus, length):
     for i in range(length):
         final_text = final_text + word + " "
         if word in cfd:
-            word = random.choice(cfd[word].keys())
+            word = random.choice(list(cfd[word].keys()))
         else:
             break
 
