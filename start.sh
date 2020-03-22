@@ -28,8 +28,10 @@ Cyber Challenger                |     |
 echo "--------------------"
 echo "Running modules....."
 python run_modules.py
-sleep 5
 echo "Whipping some malware malware....."
-./modules/malware/make_malware.sh
-
-zip "cyber_challenge.zip" output
+./modules/malware/make_malware.sh 
+echo "Almost done...zipping everything up"
+zip -r -q "cyber_challenge.zip" output/
+rm -rf output/
+echo "************"
+echo "Output is in ./cyber_challenge.zip"
