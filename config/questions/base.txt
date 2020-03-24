@@ -2,7 +2,7 @@
 ____________
 
 
-You are  a cybersecurity analyst at {{ company }}, {{ description }}.
+You are a cybersecurity analyst at {{ company }}, {{ description }}.
 
 Part 1
 
