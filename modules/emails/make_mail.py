@@ -56,7 +56,7 @@ class Email:
                     "subject": self.subject,
                     "result": self.result,
                     "link":self.link
-                  }
+                }
 
     def get_hash(self):
         val = str(self.time) + self.sender

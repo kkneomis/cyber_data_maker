@@ -1,8 +1,10 @@
-Title: {{title}}
+{{title}}
+____________
 
-You are are a cybersecurity analyst for {{ company }}. Company {{ description }}.
 
-Part 2
+You are  a cybersecurity analyst at {{ company }}, {{ description }}.
+
+Part 1
 
 Question 1
 
@@ -10,7 +12,7 @@ Several users reported having received suspicious emails from {{ malicious_sende
 
 Question 2
 
-Some of these email were blocked by your spam filters. How many emails from this sender were delivered to users?
+Some of these emails were blocked by your spam filters. How many emails from this sender were delivered to users?
 
 Question 3
 

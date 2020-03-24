@@ -259,7 +259,7 @@ def make_questions():
         template = Template(text)
 
     title = challenge_info["title"]
-    company = challenge_info["title"]
+    company = challenge_info["company_name"]
     description = challenge_info["description"]
     malicious_sender = random.choice(mal_config["senders"])
 
