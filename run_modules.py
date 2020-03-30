@@ -3,6 +3,8 @@ import shutil
 import random
 import copy
 import json
+import argparse
+
 
 from jinja2 import Template
 from datetime import datetime
@@ -15,25 +17,40 @@ from modules.emails.make_mail import create_email_obj
 from modules.outbound_browsing.make_outbound_traffic import OutboundEvent
 from modules.clock.clock import Clock
 
-employees = "config/employees.json"
+
+import argparse
+
+parser = argparse.ArgumentParser(description='')
+parser.add_argument('--config_path', type=str, default="config/changeme/default/",
+                    help='Path to config containing employee and malicous config. Defaults to config/changeme/default')
+
+args = parser.parse_args()
 
 date_time = datetime(2020, 6, 29, 8, 00, 00)
 
-
-with open('config/changeme/challenge_meta.json') as f:
-    challenge_info = json.loads(f.read())
+config_path = args.config_path
 
 # load up the company's employees
-with open('config/changeme/employees.json') as f:
-    hosts = json.loads(f.read())
+company_info_config = os.path.join(config_path, "company.json")
+with open(company_info_config, 'r') as f:
+    company_info = json.loads(f.read())
+
+hosts = company_info["employees"]
 
 # config for the adversary data
-with open('config/changeme/malicious.json', 'r') as f: 
+malicious_config = os.path.join(config_path, "malicious.json")
+with open(malicious_config, 'r') as f: 
     mal_config = json.loads(f.read())
 
 # body of text used to generate emails and other goodies
-with open('config/changeme/corpus.txt') as f:
-    corpus  = f.read()
+corpus_config = os.path.join(config_path, "corpus.txt")
+try:
+    with open(corpus_config, 'r') as f:
+        corpus  = f.read()
+except FileNotFoundError:
+    print("Hmmm... there appears ot be no corpus at this location. Using the default.")
+    with open("config/changeme/default/corpus.txt", 'r') as f:
+        corpus  = f.read()
     
 # load up the fake email sender names
 with open('config/general/names.txt') as f:
@@ -51,8 +68,7 @@ with open('config/general/templates/email_jinja_template.txt') as f:
 with open('config/general/external_hosts.txt', 'r') as f: 
     endpoints = f.readlines()
 
-
-
+  
 #template_obj = Template(template_text)
 TEMPLATE_OBJ = Template(template_text)
 MAIL_LOG = []
@@ -258,13 +274,11 @@ def make_questions():
         text = f.read()
         template = Template(text)
 
-    title = challenge_info["title"]
-    company = challenge_info["company_name"]
-    description = challenge_info["description"]
+    company = company_info["company_name"]
+    description = company_info["description"]
     malicious_sender = random.choice(mal_config["senders"])
 
-    content =  template.render(title = title,
-                               company = company,
+    content =  template.render(company = company,
                                description = description,
                                malicious_sender = malicious_sender)
 

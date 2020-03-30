@@ -1,0 +1,54 @@
+{
+    "company_name": "Godfather Securities",
+    "description": "Godfather Securities is an American multinational investment bank and financial services company headquartered in New York City. It offers services in investment management, securities, asset management, prime brokerage, and securities underwriting.",
+    "employees": [
+        {
+            "name": "Vito Corleone",
+            "email_addr": "vito.corleone@godfathersecurities.com",
+            "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 12_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/20.0 Mobile/16B92 Safari/605.1.15",
+            "ip_addr": "192.168.84.1"
+        },
+        {
+            "name": "Liuca Brasi",
+            "email_addr": "liuca.brasi@godfathersecurities.com",
+            "user_agent": "Mozilla/5.0 (Linux; Android 10; motorola one vision) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.90 Mobile Safari/537.36 EdgA/42.0.4.4062",
+            "ip_addr": "192.168.84.2"
+        },
+        {
+            "name": "Peter Clemenza",
+            "email_addr": "peter.clemenza@godfathersecurities.com",
+            "user_agent": "Mozilla/5.0 (Linux; Android 8.1.0; Smart 9 Pro) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Mobile Safari/537.36",
+            "ip_addr": "192.168.84.3"
+        },
+        {
+            "name": "Frank Pentangeli",
+            "email_addr": "frank.pentangeli@godfathersecurities.com",
+            "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_3_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/15.1b14275 Mobile/15E148 Safari/605.1.15",
+            "ip_addr": "192.168.84.4"
+        },
+        {
+            "name": "Don Altobello",
+            "email_addr": "don.altobello@godfathersecurities.com",
+            "user_agent": "Mozilla/5.0 (Linux; U; Android 8.0.0; ru-ru; ZE552KL Build/OPR1.170623.026) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/61.0.3163.128 Mobile Safari/537.36 XiaoMi/Mint Browser/3.3.1",
+            "ip_addr": "192.168.84.5"
+        },
+        {
+            "name": "Amerigo Bonasera",
+            "email_addr": "amerigo.bonasera@godfathersecurities.com",
+            "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.69 Safari/537.36 Edg/81.0.416.34",
+            "ip_addr": "192.168.84.6"
+        },
+        {
+            "name": "Danny Shea",
+            "email_addr": "danny.shea@godfathersecurities.com",
+            "user_agent": "Mozilla/5.0 (Linux; Android 7.0; G3223) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Mobile Safari/537.36'",
+            "ip_addr": "192.168.84.7"
+        },
+        {
+            "name": "Joey Zasa",
+            "email_addr": "joey.zasa@godfathersecurities.com",
+            "user_agent": "Mozilla/5.0 (iPad; CPU OS 13_3_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/2.1.0b4 Mobile/15E148 Safari/605.1.15",
+            "ip_addr": "192.168.84.8"
+        }
+    ]
+}

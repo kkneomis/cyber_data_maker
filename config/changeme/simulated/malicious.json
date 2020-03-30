@@ -1,0 +1,40 @@
+{
+    "blocked_subjects": [
+        "USPS: High Priority Package: Track it now!",
+        "Microsoft: Anderson Hauck has shared a Whiteboard with you",
+        "Avertissement des RH au sujet de l'usage des ordinateurs personnels",
+        "Attend urgently",
+        "Transaction Refund"
+    ],
+    "accepted_subjects": [
+        "You Have A New Voicemail",
+        "Donation for you"
+    ],
+    "senders": [
+        "sharedevice@protonmail.com",
+        "businesslogin@protonmail.com",
+        "businessaccount@protonmail.com",
+        "bankdigital@hotmail.com"
+    ],
+    "reply_to": [
+        "financialmicrosoft@gmail.com"
+    ],
+    "links": [
+        {
+            "url": "devicesharesecure.net/ZGVmZW5kZXJkb3dubG9hZGFjY291bnQ=",
+            "ip": "74.7.157.45"
+        },
+        {
+            "url": "banknoticereset.org/cGF5bWVudGFtYXpvbnR3aXR0ZXI=",
+            "ip": "55.72.144.101"
+        },
+        {
+            "url": "www.financialsecurebank.com/dHdpdHRlcnNlcnZpY2VzaXRl",
+            "ip": "144.111.55.4"
+        },
+        {
+            "url": "http://wwww.resetsharemicrosoft.co/cmVzZXRiYW5rcGF5bWVudA==",
+            "ip": "67.184.200.117"
+        }
+    ]
+}

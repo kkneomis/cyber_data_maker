@@ -1,0 +1,48 @@
+ {  
+    "company_name":"Soul Glo",
+    "description":"Sould Glo is a hair product company that sells premium hair enhancement products.",
+    "employees": [
+        {
+            "name": "Randy Watson",
+            "email_addr": "rwatson@soulglo.com",
+            "ip_addr": "192.168.30.231",
+            "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36" 
+        },
+        {
+            "name": "Jaffe Joffer",
+            "email_addr": "jjoffer@soulglo.com",
+            "ip_addr": "192.168.30.232",
+            "user_agent": "Mozilla/5.0 (Windows NT 5.1; rv:33.0) Gecko/20100101 Firefox/33.0" 
+        },
+        {
+            "name": "Darryl Jenks",
+            "email_addr": "djenks@soulglo.com",
+            "ip_addr": "192.168.30.233",
+            "user_agent": "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101 Firefox/52.0" 
+        },
+        {
+            "name": "Aoleon Sinclair",
+            "email_addr": "asinclair@soulglo.com",
+            "ip_addr": "192.168.30.234",
+            "user_agent": "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101 Firefox/52.0" 
+        },
+        {
+            "name": "Lisa McDowell",
+            "email_addr": "lmcdowell@soulglo.com",
+            "ip_addr": "192.168.30.235",
+            "user_agent": "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0" 
+        },
+        {
+            "name": "Imani Izzi",
+            "email_addr": "iizzi@soulglo.com",
+            "ip_addr": "192.168.30.236",
+            "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 Edge/16.16299" 
+        },
+        {
+            "name": "Randolph Duke",
+            "email_addr": "rduke@soulglo.com",
+            "ip_addr": "192.168.30.237",
+            "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 12_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0 Mobile/15E148 Safari/604.1" 
+        }
+    ]
+ }

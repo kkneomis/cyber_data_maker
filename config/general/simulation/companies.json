@@ -1,0 +1,172 @@
+[
+    {
+        "company_name":"TC Williams",
+        "description":"A sports equipment retailer focused on a wide range of sports. They started by selling American Football kits in the state of Virginia.",
+        "employees":[
+            "Herman Boone",
+            "Bill Yoast",
+            "Julius Campbell",
+            "Gerry Bertier",
+            "Petey Jones",
+            "Louie Lastik",
+            "Emma Hoyt",
+            "Ronnie Bass"
+        ]
+    },{
+        "company_name":"Happy Pursuits",
+        "description":"Happy Pursuits is a retailer selling bone density scanners for doctors and other medical practices. The scanners have been demonstrated to doctors and pitches as a handy quantum leap over standard X-rays. ",
+        "employees":[
+            "Chris Gardner",
+            "Linda Newton",
+            "Takayo Chu",
+            "Wayne Lawrence",
+            "Jaw Twistle",
+            "Syre Smith",
+            "Martin Frohm",
+            "Alan Frakesh"
+        ]
+    },{
+        "company_name":"Goldmill Gym",
+        "description":"Goldmill Gym is an American boxing gym chain with more than 300 clubs across the United States and Canada.",
+        "employees":[
+            "Robert Balboa",
+            "Apollo Creed",
+            "Tony Gazzo",
+            "Adrianna Pennino",
+            "Mickey Goldmill",
+            "Tony Evers",
+            "George Jergens",
+            "Spider Rico"
+        ]
+    },{
+        "company_name":"Tolkien Enterprise",
+        "description":"Tolkien's mission is to make the outdoors accessible and enjoyable to all.",
+        "employees":[
+            "Bilbo Baggins",
+            "Belladonna Took",
+            "Chubb Burrowes",
+            "Sackville Bagginses",
+            "Gandalf Wizzy",
+            "Radagast Mage",
+            "Bifur Moria",
+            "Elrond Rivendell"
+        ]
+    },{
+        "company_name":"BeastBoys",
+        "description":"BeasBoyz is a Tea Party Company specializing in renting a great assortment of china, flatware and glassware.",
+        "employees":[
+            "Maurice Invents",
+            "Lumiere Casanova",
+            "Cogsworth Clock",
+            "Potts Belle",
+            "Chip Teacup",
+            "Gaston Hunter",
+            "Belle Books",
+            "Caprice Beast"
+        ]
+    },{
+        "company_name":"Royal Furs",
+        "description":"Royal Furs is a manufacturer, Importers and Wholesaler of the finest fur garments. Specializing in Lion, Hyena and Warthog.",
+        "employees":[
+            "Simba King",
+            "Nala Kelly",
+            "Timon Pumbaa",
+            "Scar Shadows",
+            "Sarabi Pride",
+            "Zazu Binks",
+            "Rafiki Mandrill",
+            "Banzai Ed"
+        ]
+    },{
+        "company_name":"Lost Diamonds Int",
+        "description":"Lost Diamonds is a cruise line brand founded organised as a wholly owned subsidiary. It also operates the four largest passenger ships in the world.",
+        "employees":[
+            "Jack Dawson",
+            "Rose Calvert",
+            "Cal Hockley",
+            "Ruth Bukater",
+            "Brock Lovett",
+            "Molly Brown",
+            "John Smith",
+            "Thomas Andrews"
+        ]
+    },{
+        "company_name":"Cuckoo Hospital",
+        "description":"Cuckoo Hospital is a not-for-profit and full-service community hospital. Cuckoo offers medical, surgical, intensive care, obstetric, oncology, orthopaedic and skilled nursing inpatient services, as well as a 24-hour Emergency Department.",
+        "employees":[
+            "Randle McMurphy",
+            "Ratched Nurse",
+            "Dale Harding",
+            "Billy Bibbit",
+            "Charles Cheswick",
+            "Candy Starr",
+            "George Sorenson",
+            "Pete Bancini"
+        ]
+    },{
+        "company_name":"Thenardier Hospitality",
+        "description":"Thenardier Hospitality is an American multinational hospitality company that manages and franchises a broad portfolio of hotels and resorts.",
+        "employees":[
+            "Jean Valjean",
+            "Fantine Wilde",
+            "Eponine Thenardier",
+            "Azelma Thenardier",
+            "Javert Inspector",
+            "Gillernormand Relic",
+            "Marius Pontmercy",
+            "Jean Prouvaire"
+        ]
+    },{
+        "company_name":"Terrestrial X",
+        "description":"Terrestrial is a private American aerospace manufacturer and space transportation services company.",
+        "employees":[
+            "Mary Wallace",
+            "Elliot Thomas",
+            "Keys Coyote",
+            "Micheal MacNaughton",
+            "Gertie Barrymore",
+            "Greg Martel",
+            "Steve Frye",
+            "Tyler Howell"
+        ]
+    },{
+        "company_name":"Godfather Securities",
+        "description":"Godfather Securities is an American multinational investment bank and financial services company headquartered in New York City. It offers services in investment management, securities, asset management, prime brokerage, and securities underwriting.",
+        "employees":[
+            "Vito Corleone",
+            "Liuca Brasi",
+            "Peter Clemenza",
+            "Frank Pentangeli",
+            "Don Altobello",
+            "Amerigo Bonasera",
+            "Danny Shea",
+            "Joey Zasa"
+        ]
+    },{
+        "company_name":"Daily Bugle",
+        "description":"The Daily Bugle is a media organization, which engages in creating, collecting, and distributing news and information. It includes newspapers, print, and digital products, and mobile applications.",
+        "employees":[
+            "Peter Parker",
+            "Mary Jane Watson",
+            "Gwen Stacy",
+            "Harry Osborn",
+            "Jonah Jameson",
+            "Flash Thompson",
+            "Liz Allan",
+            "George Stacy"  	
+        ]
+    },{
+        "company_name":"Han Dynasty",
+        "description":"Han Dynasty is a technology and innovation leader specializing in defense, civil government and cybersecurity solutions.",
+        "employees":[
+            "Mulan Fa",
+            "Mushu Flames",
+            "Li Shang",
+            "Chien Po",
+            "Chi Fu",
+            "Yao Bigs",
+            "Ling Watanabe",
+            "George Takei"
+        ]
+    }
+   ]

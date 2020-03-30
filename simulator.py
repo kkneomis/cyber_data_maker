@@ -142,3 +142,7 @@ with open('config/changeme/simulated/company.json', 'w+') as f:
 
 with open('config/changeme/simulated/malicious.json', 'w+') as f:
         f.write(json.dumps(malicious_config, indent=4))
+
+
+print("New config at config/changeme/simulated/company.json")
+print("New config at config/changeme/simulated/malicious.json")
