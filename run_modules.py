@@ -3,8 +3,6 @@ import shutil
 import random
 import copy
 import json
-import argparse
-
 
 from jinja2 import Template
 from datetime import datetime
@@ -17,11 +15,11 @@ from modules.emails.make_mail import create_email_obj
 from modules.outbound_browsing.make_outbound_traffic import OutboundEvent
 from modules.clock.clock import Clock
 
-
 import argparse
 
 parser = argparse.ArgumentParser(description='')
-parser.add_argument('--config_path', type=str, default="config/changeme/default/",
+parser.add_argument(
+    '--config_path', type=str, default="config/changeme/default/",
                     help='Path to config containing employee and malicous config. Defaults to config/changeme/default')
 
 args = parser.parse_args()
@@ -39,19 +37,19 @@ hosts = company_info["employees"]
 
 # config for the adversary data
 malicious_config = os.path.join(config_path, "malicious.json")
-with open(malicious_config, 'r') as f: 
+with open(malicious_config, 'r') as f:
     mal_config = json.loads(f.read())
 
 # body of text used to generate emails and other goodies
 corpus_config = os.path.join(config_path, "corpus.txt")
 try:
     with open(corpus_config, 'r') as f:
-        corpus  = f.read()
+        corpus = f.read()
 except FileNotFoundError:
     print("Hmmm... there appears ot be no corpus at this location. Using the default.")
     with open("config/changeme/default/corpus.txt", 'r') as f:
-        corpus  = f.read()
-    
+        corpus = f.read()
+
 # load up the fake email sender names
 with open('config/general/names.txt') as f:
     sender_names = f.readlines()
@@ -65,33 +63,35 @@ with open('config/general/templates/email_jinja_template.txt') as f:
     template_text = f.read()
 
 # dummy websites that users visit
-with open('config/general/external_hosts.txt', 'r') as f: 
+with open('config/general/external_hosts.txt', 'r') as f:
     endpoints = f.readlines()
 
-  
-#template_obj = Template(template_text)
+# template_obj = Template(template_text)
 TEMPLATE_OBJ = Template(template_text)
 MAIL_LOG = []
 WEB_EVENTS = []
 MALICIOUS_EMAIL_COUNT = 10
 
-def gen_email_addr():    
+
+def gen_email_addr():
     name = random.choice(sender_names).lower().strip().replace(" ", ".")
     domain = random.choice(sender_domains).strip()
-    return "%s@%s"% (name, domain)
+    return "%s@%s" % (name, domain)
+
 
 OUTPUT_PATH = "output/"
 if not os.path.exists(OUTPUT_PATH):
     os.makedirs(OUTPUT_PATH)
 
+
 def gen_emails(num=3):
     """
-    Generate a log of background email activity 
+    Generate a log of background email activity
     Emails are either accepted or blocked
     Generate email files for accepted emails the logs
     """
     clock = Clock(start=date_time, interval=3000)
-    
+
     # creating {num} number of emails and adding the mail log
     print("Generating email objects...")
     for i in tqdm(range(num)):
@@ -109,14 +109,12 @@ def gen_emails(num=3):
             # otherwise generate noise email
             sender = gen_email_addr()
             recipient = random.choice(hosts)["email_addr"]
-            
-            result = Email(time, sender_domains, sender, recipient, corpus).stringify()
-            
+
+            result = Email(
+                time, sender_domains, sender, recipient, corpus).stringify()
+
             MAIL_LOG.append(result)
             clock.tick()
-        
-
-    
 
 
 def inject_malicious_emails(time):
@@ -132,8 +130,8 @@ def inject_malicious_emails(time):
         recipient = random.choice(hosts)["email_addr"]
         subject = random.choice(mal_config["accepted_subjects"])
         link = random.choice(mal_config["links"])["url"]
-        new_mail = Email(time, sender_domains, sender, recipient, corpus, 
-                        result="Accepted", subject=subject, link=link, reply_to=reply_to)
+        new_mail = Email(time, sender_domains, sender, recipient, corpus,
+                         result="Accepted", subject=subject, link=link, reply_to=reply_to)
         MAIL_LOG.append(new_mail.stringify())
     else:
         # generate blocked emails
@@ -141,14 +139,14 @@ def inject_malicious_emails(time):
         subject = random.choice(mal_config["blocked_subjects"])
         link = random.choice(mal_config["links"])["url"]
         new_mail = Email(time, sender_domains, sender, recipient, corpus,
-                             result="Blocked", subject=subject, link=link, reply_to=reply_to)
+                         result="Blocked", subject=subject, link=link, reply_to=reply_to)
         MAIL_LOG.append(new_mail.stringify())
 
 
 def gen_browsing(num):
     """Generate fake web browsing traffic"""
     clock = Clock(start=date_time, interval=400)
-    
+
     print("Generating %s web browsing evants..." % num)
     for i in tqdm(range(num)):
         time = clock.get_time()
@@ -165,7 +163,7 @@ def inject_malicious_traffic():
 
     def get_link_ip(url):
         """
-        Search the config file for the 
+        Search the config file for the
         IP addr corresponding to a link
         """
         for link in mal_config["links"]:
@@ -174,7 +172,7 @@ def inject_malicious_traffic():
 
     def get_user_from_email(email_addr):
         """
-        Get full user info from config file 
+        Get full user info from config file
         using the user's email addr
         """
         for user in hosts:
@@ -183,7 +181,7 @@ def inject_malicious_traffic():
 
     for event in MAIL_LOG:
         if "google.com" not in event["link"]:
-            #and event["result"] == "Accepted"
+            # and event["result"] == "Accepted"
             user = get_user_from_email(event["recipient"])
             link = event["link"]
             parsed_link = link.split("//")[-1].split("/")
@@ -193,11 +191,13 @@ def inject_malicious_traffic():
             if not ip:
                 # this was a made up email domain. it is not mapped to an IP in our file of domains
                 # give it a fake IP on the spot
-                ip = ".".join(map(str, (random.randint(0, 255)  for _ in range(4))))
-            time = parse(event["event_time"]) + timedelta(seconds=random.randint(0, 100))
+                ip = ".".join(
+                    map(str, (random.randint(0, 255) for _ in range(4))))
+            time = parse(event["event_time"]) + timedelta(
+                seconds=random.randint(0, 100))
             endpoint = "%s/ %s" % (domain, ip)
-            new_event = OutboundEvent(time, hosts, endpoints, 
-                                     user=user, endpoint=endpoint, request=request).stringify()
+            new_event = OutboundEvent(time, hosts, endpoints,
+                                      user=user, endpoint=endpoint, request=request).stringify()
             WEB_EVENTS.append(new_event)
 
 
@@ -211,8 +211,8 @@ def write_browsing():
 
 
 def write_email():
-    """ 
-    write json email objects to file 
+    """
+    write json email objects to file
     write full email bodies to files
     """
     # output dictories for the logs and email fiels
@@ -238,14 +238,14 @@ def write_email():
     for email in tqdm(MAIL_LOG):
         # we are only generating files for accepted emails
         if email['result'] != "Blocked":
-            content = create_email_obj(email, corpus, TEMPLATE_OBJ, email_file_dir)
+            content = create_email_obj(
+                email, corpus, TEMPLATE_OBJ, email_file_dir)
             email_filename = os.path.join(email_file_dir, email['filename'])
             with open(email_filename, 'w+') as f:
                 f.write(content)
 
 
-
-#def gen_web_server_data():
+# def gen_web_server_data():
 #    """Generate web server logs"""
 #    pass
 
@@ -260,6 +260,7 @@ def set_up_output_dir():
     os.mkdir('output')
     print('Created a new output dir...')
 
+
 def add_employee_data():
     """Add employee info to the output"""
     print("Adding employee info to output....")
@@ -268,7 +269,7 @@ def add_employee_data():
 
 
 def make_questions():
-    """Generate question set""" 
+    """Generate question set"""
     print("Generating questions....")
     with open('config/questions/base.txt') as f:
         text = f.read()
@@ -278,13 +279,12 @@ def make_questions():
     description = company_info["description"]
     malicious_sender = random.choice(mal_config["senders"])
 
-    content =  template.render(company = company,
-                               description = description,
-                               malicious_sender = malicious_sender)
+    content = template.render(company=company,
+                              description=description,
+                              malicious_sender=malicious_sender)
 
     with open('output/prompt.txt', 'w+') as f:
         f.write(content)
-
 
 
 set_up_output_dir()

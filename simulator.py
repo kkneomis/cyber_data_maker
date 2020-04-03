@@ -6,9 +6,9 @@ import ipaddress
 malicious_config = {}
 company_info = {}
 
-WORD_CLOUD = [ "account", "site", "user", "microsoft", "twitter", "it", "reset", "download", "org", "digital",
-                "invoice", "payment", "secure", "notice", "critical", "financial", "bank", "service",
-                "business", "portal", "browse", "legit", "defender", "login", "share", "amazon", "device"]
+WORD_CLOUD = ["account", "site", "user", "microsoft", "twitter", "it", "reset", "download", "org", "digital",
+              "invoice", "payment", "secure", "notice", "critical", "financial", "bank", "service",
+              "business", "portal", "browse", "legit", "defender", "login", "share", "amazon", "device"]
 
 EMAIL_DOMAINS = ["@gmail.com", "@yahoo.com", "@hotmail.com", "@protonmail.com"]
 
@@ -38,6 +38,7 @@ def gen_sender_addr():
 
     return sender_addr
 
+
 def gen_senders():
     num = random.randint(1, 5)
     senders = []
@@ -53,10 +54,10 @@ def gen_link():
     # thanks to: https://www.geeksforgeeks.org/python-remove-all-characters-except-letters-and-numbers/
     import re
     pre = random.choice(["http://",
-                        "https://",
-                        "www.", 
-                        "http://wwww.",
-                        "https://www.", ""])
+                         "https://",
+                         "www.",
+                         "http://wwww.",
+                         "https://www.", ""])
     tld = random.choice([".com", ".org", ".net", ".co", ".info", ".co.uk"])
     domain = "".join(random.sample(WORD_CLOUD, 3))
 
@@ -67,24 +68,26 @@ def gen_link():
     link = pre + domain + tld + "/" + request
     return link
 
+
 def gen_ip():
     """Create a dummy IP addr"""
-    return ".".join(map(str, (random.randint(0, 255)  for _ in range(4))))
+    return ".".join(map(str, (random.randint(0, 255) for _ in range(4))))
 
 
 def gen_links():
     """Generate a random number of links/IP pairs"""
-    num = random.randint(2,7)
+    num = random.randint(2, 7)
     links = []
     for _ in range(num):
         links.append(
             {
-                "url":gen_link(),
-                "ip":gen_ip()
+                "url": gen_link(),
+                "ip": gen_ip()
             }
         )
-    
+
     return links
+
 
 def get_user_agent():
     """
@@ -93,7 +96,7 @@ def get_user_agent():
     with open("config/general/user_agents.txt") as f:
         agent = f.readlines()
     return random.choice(agent).strip()
-    
+
 
 def gen_email_addr(name):
     """
@@ -102,31 +105,30 @@ def gen_email_addr(name):
     pass
 
 
-
 def gen_users():
     with open("config/general/simulation/companies.json") as f:
         data = json.loads(f.read())
 
     ip = ipaddress.ip_address('192.168.84.1')
     company = random.choice(data)
-    domain  = "".join(company["company_name"].split(" ")).lower() + ".com"
+    domain = "".join(company["company_name"].split(" ")).lower() + ".com"
     employees = company["employees"]
     users = []
-    
+
     for employee in employees:
         user = {}
         user["name"] = employee
-        user["email_addr"] = ".".join(employee.split(" ")).lower() + "@" + domain
+        user["email_addr"] = ".".join(
+            employee.split(" ")).lower() + "@" + domain
         user["user_agent"] = get_user_agent()
         user["ip_addr"] = str(ip)
-        ip +=1
+        ip += 1
         users.append(user)
 
     company["employees"] = users
 
     return company
 
-    
 
 malicious_config["blocked_subjects"] = get_subject(5)
 malicious_config["accepted_subjects"] = get_subject(2)
@@ -136,13 +138,11 @@ malicious_config["links"] = gen_links()
 
 company_info = gen_users()
 
-
 with open('config/changeme/simulated/company.json', 'w+') as f:
-        f.write(json.dumps(company_info, indent=4))
+    f.write(json.dumps(company_info, indent=4))
 
 with open('config/changeme/simulated/malicious.json', 'w+') as f:
-        f.write(json.dumps(malicious_config, indent=4))
-
+    f.write(json.dumps(malicious_config, indent=4))
 
 print("New config at config/changeme/simulated/company.json")
 print("New config at config/changeme/simulated/malicious.json")
