@@ -63,7 +63,7 @@ def gen_link():
 
     request = "".join(random.sample(WORD_CLOUD, 3))
     encodedBytes = base64.b64encode(request.encode("utf-8"))
-    request = str(encodedBytes, "utf-8")
+    request = str(encodedBytes)
 
     link = pre + domain + tld + "/" + request
     return link
@@ -109,7 +109,7 @@ def gen_users():
     with open("config/general/simulation/companies.json") as f:
         data = json.loads(f.read())
 
-    ip = ipaddress.ip_address('192.168.84.1')
+    ip = ipaddress.ip_address(u'192.168.84.1')
     company = random.choice(data)
     domain = "".join(company["company_name"].split(" ")).lower() + ".com"
     employees = company["employees"]

@@ -1,40 +1,39 @@
 {
-    "blocked_subjects": [
-        "USPS: High Priority Package: Track it now!",
-        "Microsoft: Anderson Hauck has shared a Whiteboard with you",
-        "Avertissement des RH au sujet de l'usage des ordinateurs personnels",
-        "Attend urgently",
-        "Transaction Refund"
-    ],
-    "accepted_subjects": [
-        "You Have A New Voicemail",
-        "Donation for you"
-    ],
-    "senders": [
-        "sharedevice@protonmail.com",
-        "businesslogin@protonmail.com",
-        "businessaccount@protonmail.com",
-        "bankdigital@hotmail.com"
-    ],
     "reply_to": [
-        "financialmicrosoft@gmail.com"
-    ],
+        "browsesecure@protonmail.com"
+    ], 
+    "accepted_subjects": [
+        "Change of Password Required Immediately", 
+        "Direct Deposit"
+    ], 
+    "blocked_subjects": [
+        "Follow up", 
+        "Would you mind taking a look at this invoice?", 
+        "AMAZON: Your order No # 812-4623 could arrive", 
+        "Hello", 
+        "Password Check Required Immediately"
+    ], 
+    "senders": [
+        "secureshare@protonmail.com", 
+        "resetshare@gmail.com", 
+        "microsoftlegit@yahoo.com"
+    ], 
     "links": [
         {
-            "url": "devicesharesecure.net/ZGVmZW5kZXJkb3dubG9hZGFjY291bnQ=",
-            "ip": "74.7.157.45"
-        },
+            "url": "downloadaccountpayment.org/dHdpdHRlcmFjY291bnRwb3J0YWw=", 
+            "ip": "81.189.58.38"
+        }, 
         {
-            "url": "banknoticereset.org/cGF5bWVudGFtYXpvbnR3aXR0ZXI=",
-            "ip": "55.72.144.101"
-        },
+            "url": "https://www.deviceservicedigital.co.uk/bG9naW5icm93c2VwYXltZW50", 
+            "ip": "109.56.159.160"
+        }, 
         {
-            "url": "www.financialsecurebank.com/dHdpdHRlcnNlcnZpY2VzaXRl",
-            "ip": "144.111.55.4"
-        },
+            "url": "https://criticalinvoiceamazon.info/cG9ydGFsZGVmZW5kZXJiYW5r", 
+            "ip": "121.169.218.202"
+        }, 
         {
-            "url": "http://wwww.resetsharemicrosoft.co/cmVzZXRiYW5rcGF5bWVudA==",
-            "ip": "67.184.200.117"
+            "url": "https://businessamazonshare.co/dXNlcm5vdGljZWludm9pY2U=", 
+            "ip": "66.250.129.212"
         }
     ]
 }
