@@ -28,7 +28,7 @@ date_time = datetime(2020, 6, 29, 8, 00, 00)
 
 config_path = args.config_path
 
-# load up the company's employees
+# load up the company's employwees
 company_info_config = os.path.join(config_path, "company.json")
 with open(company_info_config, 'r') as f:
     company_info = json.loads(f.read())
@@ -45,7 +45,7 @@ corpus_config = os.path.join(config_path, "corpus.txt")
 try:
     with open(corpus_config, 'r') as f:
         corpus = f.read()
-except FileNotFoundError:
+except Exception as e:
     print("Hmmm... there appears ot be no corpus at this location. Using the default.")
     with open("config/changeme/default/corpus.txt", 'r') as f:
         corpus = f.read()
