@@ -8,6 +8,8 @@ import nltk
 import json
 import hashlib
 
+from modules.emails.generate_email import generateEmail
+
 date_time = datetime(1988, 6, 29, 8, 00, 00)
 
 
@@ -18,7 +20,7 @@ class Email:
                  reply_to=None):
 
         self.time = date_time.strftime("%a %b %d %H:%M:%S %Y")
-        self.body = generate_text(corpus, 20)
+        self.body = generateEmail()
         self.sender = sender
         self.recipient = recipient
         self.hash = self.get_hash()
@@ -31,7 +33,8 @@ class Email:
             self.result = result
 
         if not subject:
-            self.subject = generate_text(corpus, 7)
+            text = self.body.split()
+            self.subject = text[:5]
         else:
             self.subject = subject
 
