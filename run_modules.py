@@ -11,7 +11,6 @@ from datetime import timedelta
 from tqdm import tqdm
 
 from modules.emails.make_mail import Email
-from modules.emails.make_mail import create_email_obj
 from modules.outbound_browsing.make_outbound_traffic import OutboundEvent
 from modules.clock.clock import Clock
 
@@ -84,78 +83,94 @@ if not os.path.exists(OUTPUT_PATH):
     os.makedirs(OUTPUT_PATH)
 
 
-def gen_emails(num=3):
-    """
-    Generate a log of background email activity
-    Emails are either accepted or blocked
-    Generate email files for accepted emails the logs
-    """
-    clock = Clock(start=date_time, interval=3000)
+config_path = "config/changeme/default/" #args.config_path
 
+
+email_body_config = os.path.join(config_path, "email_body.json")
+try:
+    with open(email_body_config, 'r') as f:
+        email_body = json.loads(f.read())
+except Exception as e:
+    print("Hmmm... there appears to be no json at this location. Using the default.")
+    with open("config/general/email_body.json", 'r') as f:
+        email_body = json.loads(f.read())    
+
+        
+def gen_emails(num=10, malicious_emails=10):
+    clock = Clock(start=date_time, interval=3000)
+    email_log_filename = os.path.join(OUTPUT_PATH, "mail_logs.json")
+    email_file_dir = os.path.join(OUTPUT_PATH, "emails")
+    
     # creating {num} number of emails and adding the mail log
     print("Generating email objects...")
     for i in tqdm(range(num)):
+        emailtype = ""
+        is_malicious = False
+        is_internal = False
         time = clock.get_time()
-        # generate a random float to represent probably of malicious email
-        # 20% of the time, make the email malicious targeted
-        # until we've generated the necessary number of malicious emails
-        malicious = random.random()
-        global MALICIOUS_EMAIL_COUNT
-        if malicious <= .2 and MALICIOUS_EMAIL_COUNT > 0:
+        mailtype = random.random()
+        if mailtype <= .2 and malicious_emails > 0:   # Is malicious
             # generate a targeted malicious email
-            inject_malicious_emails(time)
-            MALICIOUS_EMAIL_COUNT -= 1
-        else:
-            # otherwise generate noise email
-            sender = gen_email_addr()
-            recipient = random.choice(hosts)["email_addr"]
+            is_malicious = True
+            malicious_emails -= 1
+            emailtype = "malware"
+        elif mailtype <= .8:  #Is Internal
+            is_internal = True
+            emailtype = "internal"
+        else: #Is External
+            is_internal = False
+            emailtype = "external"
+        
+        email = do_email(time, emailtype)
+        # Save Email to file
+        if email.result != "Blocked":
+            t = TEMPLATE_OBJ
 
-            result = Email(
-                time, sender_domains, sender, recipient, corpus).stringify()
-
-            MAIL_LOG.append(result)
-            clock.tick()
-
-
-def inject_malicious_emails(time):
-    """Generate emails from malicious senders"""
-
-    # creating {num} number of emails and adding the mail log
-    sender = random.choice(mal_config["senders"])
-    result = random.choice(["Accepted", "Blocked"])
-    reply_to = random.choice(mal_config["reply_to"])
-
-    if result == "Accepted":
-        # generate accepted emails
-        recipient = random.choice(hosts)["email_addr"]
-        subject = random.choice(mal_config["accepted_subjects"])
-        link = random.choice(mal_config["links"])["url"]
-        new_mail = Email(time, sender_domains, sender, recipient, corpus,
-                         result="Accepted", subject=subject, link=link, reply_to=reply_to)
-        MAIL_LOG.append(new_mail.stringify())
-    else:
-        # generate blocked emails
-        recipient = random.choice(hosts)["email_addr"]
-        subject = random.choice(mal_config["blocked_subjects"])
-        link = random.choice(mal_config["links"])["url"]
-        new_mail = Email(time, sender_domains, sender, recipient, corpus,
-                         result="Blocked", subject=subject, link=link, reply_to=reply_to)
-        MAIL_LOG.append(new_mail.stringify())
-
-
-def gen_browsing(num):
-    """Generate fake web browsing traffic"""
-    clock = Clock(start=date_time, interval=400)
-
-    print("Generating %s web browsing evants..." % num)
-    for i in tqdm(range(num)):
-        time = clock.get_time()
-        new_event = OutboundEvent(time, hosts, endpoints).stringify()
-        WEB_EVENTS.append(new_event)
-
+            content = t.render(body=email.body,
+                       sender=email.sender,
+                       reply_to=email.reply_to,
+                       time=email.time,
+                       recipient=email.recipient,
+                       subject=email.subject,
+                       link=email.link if emailtype == "malware" else random.choice(["", "", email.link]))
+            email_filename = os.path.join(email_file_dir, email.filename)
+            with open(email_filename, 'w+') as f:
+                f.write(content)
+        # Log Email 
+        MAIL_LOG.append(email)
+        with open(email_log_filename, 'a') as f:
+            f.write(json.dumps(email.stringifysimple()))
+            f.write("\n")
         clock.tick()
+        
+        
+def do_email(date_time, emailtype):
+    datum = email_body[emailtype]
+    data = random.choice( datum )
+    sender = ""
+    recipient = random.choice(hosts)["email_addr"]
+    while ((sender == "") or (sender==recipient)):
+        if emailtype == "internal":
+            sender = random.choice(hosts)["email_addr"]
+            result = "Accepted"
+            link = None
+        elif emailtype == "external":
+            sender = gen_email_addr()
+            result = "Accepted"
+            link = None
+        else:
+            sender = random.choice(mal_config["senders"])
+            result = random.choice(["Accepted", "Blocked"])
+            link = random.choice(mal_config["links"])["url"]
+    #     subject = random_string(data['subject'])
+    #     body = random_string(data['body'])
+    subject, body = random_string2(data['subject'],data['body'])
+    # ADD HANDLING FOR MALICIOUS EMAILS
 
-
+    result = Email(date_time, sender, recipient, subject, body, result, link=link)
+    return result
+        
+        
 def inject_malicious_traffic():
     """General traffic of users clicking bad links
     Make this trigger after malicious email is injected
@@ -180,10 +195,10 @@ def inject_malicious_traffic():
                 return user
 
     for event in MAIL_LOG:
-        if "google.com" not in event["link"]:
+        if "google.com" not in event.link:
             # and event["result"] == "Accepted"
-            user = get_user_from_email(event["recipient"])
-            link = event["link"]
+            user = get_user_from_email(event.recipient)
+            link = event.link
             parsed_link = link.split("//")[-1].split("/")
             domain = parsed_link[0].split('?')[0]
             request = '/'.join(parsed_link[1:])
@@ -193,12 +208,69 @@ def inject_malicious_traffic():
                 # give it a fake IP on the spot
                 ip = ".".join(
                     map(str, (random.randint(0, 255) for _ in range(4))))
-            time = parse(event["event_time"]) + timedelta(
+            time = parse(event.time) + timedelta(
                 seconds=random.randint(0, 100))
             endpoint = "%s/ %s" % (domain, ip)
             new_event = OutboundEvent(time, hosts, endpoints,
                                       user=user, endpoint=endpoint, request=request).stringify()
-            WEB_EVENTS.append(new_event)
+            WEB_EVENTS.append(new_event)        
+        
+        
+def random_string(corpus):
+    while True:
+        container = find_next_container(corpus)
+        if container == "":
+            break
+        else:
+            token = choose_token(container)
+            corpus = corpus.replace(container, token, 1)
+    return corpus
+
+def random_string2(sub, bod):
+    while True:
+        container = find_next_container(sub)
+        if container == "":
+            break
+        else:
+            token = choose_token(container)
+            sub = sub.replace(container, token)
+            bod = bod.replace(container, token)
+    while True:
+        container = find_next_container(bod)
+        if container == "":
+            break
+        else:
+            token = choose_token(container)
+            bod = bod.replace(container, token)
+    return sub, bod
+
+def find_next_container(blurb):
+    s = blurb.find('<<')
+    e = blurb.find('>>')
+    if s > -1:
+        return (blurb[s:e+2])
+    else:
+        return ("")
+    
+def choose_token(container):
+    container = container[2: -2]
+    terms = container.split('||')
+    term = random.choice(terms)
+    return term
+
+
+def gen_browsing(num):
+    """Generate fake web browsing traffic"""
+    clock = Clock(start=date_time, interval=400)
+
+    print("Generating %s web browsing evants..." % num)
+    for i in tqdm(range(num)):
+        time = clock.get_time()
+        new_event = OutboundEvent(time, hosts, endpoints).stringify()
+        WEB_EVENTS.append(new_event)
+
+        clock.tick()
+
 
 
 def write_browsing():
@@ -208,41 +280,6 @@ def write_browsing():
         for event in WEB_EVENTS:
             f.write(event)
             f.write("\n")
-
-
-def write_email():
-    """
-    write json email objects to file
-    write full email bodies to files
-    """
-    # output dictories for the logs and email fiels
-    email_log_filename = os.path.join(OUTPUT_PATH, "mail_logs.json")
-    email_file_dir = os.path.join(OUTPUT_PATH, "emails")
-
-    # create the email output directory if it doesn't already exist
-    if not os.path.exists(email_file_dir):
-        os.makedirs(email_file_dir)
-
-    with open(email_log_filename, 'a') as f:
-        for email in MAIL_LOG:
-            # we don't want to print the link in the json email log
-            # but we need it for other things
-            # so make a close instead and delete the link key from the dict
-            email_tmp = copy.deepcopy(email)
-            del email_tmp['link']
-            f.write(json.dumps(email_tmp))
-            f.write("\n")
-
-    # generate email files
-    print("Generating email files...")
-    for email in tqdm(MAIL_LOG):
-        # we are only generating files for accepted emails
-        if email['result'] != "Blocked":
-            content = create_email_obj(
-                email, corpus, TEMPLATE_OBJ, email_file_dir)
-            email_filename = os.path.join(email_file_dir, email['filename'])
-            with open(email_filename, 'w+') as f:
-                f.write(content)
 
 
 # def gen_web_server_data():
@@ -259,6 +296,8 @@ def set_up_output_dir():
     print('Removed existing output dir...')
     os.mkdir('output')
     print('Created a new output dir...')
+    os.mkdir('output/emails')
+    print('Created a new emails dir...')
 
 
 def add_employee_data():
@@ -292,6 +331,5 @@ gen_emails(100)
 gen_browsing(1000)
 inject_malicious_traffic()
 write_browsing()
-write_email()
 make_questions()
 add_employee_data()
