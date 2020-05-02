@@ -1,43 +1,39 @@
 {
-    "reply_to": [
-        "resetpayment@gmail.com"
-    ], 
-    "accepted_subjects": [
-        "Urgent/Important", 
-        "Docusign: Your Docusign account is suspended"
-    ], 
     "blocked_subjects": [
-        "New Organizational Changes", 
-        "Amazon: We tried to deliver your package today", 
-        "HR: Employees Raises", 
-        "Chase: Fraudulent Activity On Your Checking Account \u2013 Act Now", 
-        "Microsoft: Re: Important Email Backup Failed"
-    ], 
+        "Dropbox: Document Shared With You",
+        "Amazon: Refund - Valid Billing Information Needed",
+        "Password Check Required Immediately",
+        "Revised Vacation & Sick Time Policy",
+        "Amazon: We tried to deliver your package today"
+    ],
+    "accepted_subjects": [
+        "Follow up",
+        "You Have A New Voicemail"
+    ],
     "senders": [
-        "invoiceservice@yahoo.com", 
-        "logindownload@hotmail.com", 
-        "orgdigital@gmail.com"
-    ], 
+        "resetpayment@yahoo.com",
+        "portalbusiness@yahoo.com",
+        "accountnotice@protonmail.com"
+    ],
+    "reply_to": [
+        "secureit@gmail.com"
+    ],
     "links": [
         {
-            "url": "http://wwww.downloadfinancialdefender.org/ZGVmZW5kZXJwb3J0YWxsZWdpdA==", 
-            "ip": "137.108.78.21"
-        }, 
+            "url": "noticeportalorg.co.uk/b'ZGVmZW5kZXJkaWdpdGFsYnJvd3Nl'",
+            "ip": "33.223.120.217"
+        },
         {
-            "url": "http://resetpaymentbrowse.co.uk/ZG93bmxvYWRzaGFyZXR3aXR0ZXI=", 
-            "ip": "132.252.120.197"
-        }, 
+            "url": "http://serviceuserdefender.co.uk/b'bWljcm9zb2Z0dHdpdHRlcm5vdGljZQ=='",
+            "ip": "65.161.175.205"
+        },
         {
-            "url": "resetbrowsefinancial.com/cGF5bWVudGxvZ2luZmluYW5jaWFs", 
-            "ip": "46.125.221.55"
-        }, 
+            "url": "http://invoiceorgsite.co/b'Y3JpdGljYWxub3RpY2VhbWF6b24='",
+            "ip": "98.132.121.83"
+        },
         {
-            "url": "http://wwww.portalmicrosoftdefender.info/bGVnaXRyZXNldHNlY3VyZQ==", 
-            "ip": "48.77.254.151"
-        }, 
-        {
-            "url": "banksharecritical.org/c2hhcmVsb2dpbmFjY291bnQ=", 
-            "ip": "144.70.46.76"
+            "url": "https://www.bankaccountinvoice.net/b'bGVnaXRzaGFyZXBvcnRhbA=='",
+            "ip": "205.61.116.60"
         }
     ]
 }

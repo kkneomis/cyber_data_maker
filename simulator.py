@@ -1,17 +1,15 @@
+import os
 import json
 import random
 import base64
 import ipaddress
-
-malicious_config = {}
-company_info = {}
+import shutil
 
 WORD_CLOUD = ["account", "site", "user", "microsoft", "twitter", "it", "reset", "download", "org", "digital",
               "invoice", "payment", "secure", "notice", "critical", "financial", "bank", "service",
               "business", "portal", "browse", "legit", "defender", "login", "share", "amazon", "device"]
 
 EMAIL_DOMAINS = ["@gmail.com", "@yahoo.com", "@hotmail.com", "@protonmail.com"]
-
 
 def get_subject(num_subjects):
     """
@@ -129,20 +127,41 @@ def gen_users():
 
     return company
 
+def set_up_output_dir(OUTPUT_PATH):
+    """
+    Remove output folder if exists
+    Create a new one
+    """
+    #try:
+    shutil.rmtree(OUTPUT_PATH, ignore_errors=False, onerror=None)
+    #except:
+    #    print('Error while deleting directory')
+    os.mkdir(OUTPUT_PATH)
+ 
+def run_simulation():
+    malicious_config = {}
+    company_info = {}
 
-malicious_config["blocked_subjects"] = get_subject(5)
-malicious_config["accepted_subjects"] = get_subject(2)
-malicious_config["senders"] = gen_senders()
-malicious_config["reply_to"] = [gen_sender_addr()]
-malicious_config["links"] = gen_links()
+    set_up_output_dir('config/changeme/simulated')
 
-company_info = gen_users()
+    malicious_config["blocked_subjects"] = get_subject(5)
+    malicious_config["accepted_subjects"] = get_subject(2)
+    malicious_config["senders"] = gen_senders()
+    malicious_config["reply_to"] = [gen_sender_addr()]
+    malicious_config["links"] = gen_links()
 
-with open('config/changeme/simulated/company.json', 'w+') as f:
-    f.write(json.dumps(company_info, indent=4))
+    company_info = gen_users()
 
-with open('config/changeme/simulated/malicious.json', 'w+') as f:
-    f.write(json.dumps(malicious_config, indent=4))
+    with open('config/changeme/simulated/company.json', 'w+') as f:
+        f.write(json.dumps(company_info, indent=4))
 
-print("New config at config/changeme/simulated/company.json")
-print("New config at config/changeme/simulated/malicious.json")
+    with open('config/changeme/simulated/malicious.json', 'w+') as f:
+        f.write(json.dumps(malicious_config, indent=4))
+
+    return 'config/changeme/simulated'
+
+
+if __name__== "__main__":
+    run_simulation()
+    print("New config at config/changeme/simulated/company.json")
+    print("New config at config/changeme/simulated/malicious.json")

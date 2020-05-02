@@ -18,18 +18,23 @@ import argparse
 parser = argparse.ArgumentParser(description='')
 parser.add_argument(
     '--config_path', type=str, default="config/changeme/default/",
-                    help='Path to config containing employee and malicous config.\
+                    help='Use a custom config. Path to config containing employee and malicous config.\
                           Defaults to config/changeme/default')
+parser.add_argument("--simulate", "-s", default=False, action='store_true', help="Run a simulation and provide a random config.")
 
-args = parser.parse_args()
 
 #============================================
 # Set up all the configs
 # TODO: find a way to share with with modules
 #============================================
+args = parser.parse_args()
+if args.simulate:
+    from simulator import run_simulation
+    config_path = run_simulation()
+else:
+    config_path = args.config_path
 
 start_time = datetime(2020, 6, 29, 8, 00, 00)
-config_path = args.config_path
 
 # load up the company's employees
 company_info_config = os.path.join(config_path, "company.json")
@@ -57,6 +62,7 @@ config = {
 #============================================
 # Main: here is all the action
 #============================================
+
 
 # set up and metada functions
 set_up_output_dir('output')

@@ -28,12 +28,10 @@ The resulting data will be in the `output/` folder
 You also have the option of using the simulator script to create storyline for you.
 This script will generate a "random" company with employees and "random" adversary data.
 ```bash
-challenge_maker$ python simulator.py 
-New config at config/changeme/simulated/company.json
-New config at config/changeme/simulated/malicious.json
+$ python run_modules.py -s
 ```
 
-When you do so, you must specfic the new config directory for the project to use
+Alternatively you can make your own config and tell the challenge make to use that.
 ```
 python run_modules.py --config config/changeme/simulated/
 ```
