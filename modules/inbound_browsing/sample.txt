@@ -1,1 +1,0 @@
-20200101 20.76.121.219 GET company.com /products/4-year-fixed-rate-account-non-personal "Mozilla/5.0 (Linux; Android 7.0; G3223) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Mobile Safari/537.36'" 200
