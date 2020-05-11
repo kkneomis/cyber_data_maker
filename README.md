@@ -38,6 +38,6 @@ python run_modules.py --config config/changeme/simulated/
 
 ### TODO
 
-* Fix malware module maker to work cross platform
-* Add in inbound web data
+* Add malicious activity to inbound web data
 * Add in option for different compromise scenarios
+* Create host log module (starting with MFT)
