@@ -10,12 +10,16 @@ def set_up_output_dir(OUTPUT_PATH):
     Remove output folder if exists
     Create a new one
     """
-    shutil.rmtree(OUTPUT_PATH)
-    print('Removed existing output dir...')
+    if os.path.exists(OUTPUT_PATH):
+        shutil.rmtree(OUTPUT_PATH)
+        print('Removed existing output dir...')
     os.mkdir(OUTPUT_PATH)
     print('Created a new output dir...')
     os.mkdir(os.path.join(OUTPUT_PATH, 'emails'))
     print('Created a new emails dir...')
+    os.mkdir(os.path.join(OUTPUT_PATH, 'malware'))
+    print('Created a new malware dir...')
+
 
 
 #============================================
@@ -59,4 +63,30 @@ def list_to_file(EVENTS, filepath):
             f.write(event)
             f.write("\n")
 
+
+def show_ascii_art():
+    art = '''
+    Cyber Challenger                |     |
+                                    \\_V_//
+                                    \/=|=\/
+                                     [=v=]
+                                   __\___/_____
+                                  /..[  _____  ]
+                                 /_  [ [  M /] ]
+                                /../.[ [ M /@] ]
+                               <-->[_[ [M /@/] ]
+                              /../ [.[ [ /@/ ] ]
+         _________________]\ /__/  [_[ [/@/ C] ]
+        <_________________>>0---]  [=\ \@/ C / /
+           ___      ___   ]/000o   /__\ \ C / /
+              \    /              /....\ \_/ /
+           ....\||/....           [___/=\___/
+          .    .  .    .          [...] [...]
+         .      ..      .         [___/ \___]
+         .    0 .. 0    .         <---> <--->
+      /\/\.    .  .    ./\/\      [..]   [..]
+     / / / .../|  |\... \ \ \    _[__]   [__]_
+    / / /       \/       \ \ \  [____>   <____]
+    '''
+    print(art)
 

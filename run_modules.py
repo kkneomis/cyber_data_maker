@@ -8,6 +8,8 @@ from modules.emails.generateEmail import gen_emails
 from modules.inbound_browsing.genInboundTraffic import gen_inbound_traffic
 from modules.outbound_browsing.genOutboundTraffic import gen_browsing
 from modules.outbound_browsing.genOutboundTraffic import click_links
+from modules.malware.make_malware import make_malware
+
 from utils import *
 
 import argparse
@@ -20,12 +22,18 @@ parser.add_argument(
     '--config_path', type=str, default="config/changeme/default/",
                     help='Use a custom config. Path to config containing employee and malicous config.\
                           Defaults to config/changeme/default')
-parser.add_argument("--simulate", "-s", default=False, action='store_true', help="Run a simulation and provide a random config.")
+parser.add_argument("--simulate", "-s", default=False, action='store_true', 
+                    help="Run a simulation and provide a random config.")
 
 
 #============================================
+# Most important part !!!!
+# Display ascii art
+#============================================
+show_ascii_art()
+
+#============================================
 # Set up all the configs
-# TODO: find a way to share with with modules
 #============================================
 args = parser.parse_args()
 if args.simulate:
@@ -33,6 +41,9 @@ if args.simulate:
     config_path = run_simulation()
 else:
     config_path = args.config_path
+
+# set up and metada functions
+set_up_output_dir('output')
 
 start_time = datetime(2020, 6, 29, 8, 00, 00)
 
@@ -62,10 +73,6 @@ config = {
 #============================================
 # Main: here is all the action
 #============================================
-
-
-# set up and metada functions
-set_up_output_dir('output')
 make_questions(**config)
 add_employee_data(**config)
 
@@ -83,3 +90,6 @@ all_outbound_traffic = click_traffic + browsing_noise
 all_outbound_traffic.sort()
 list_to_file(all_outbound_traffic, 'output/outbound_proxy_traffic.txt')
 
+
+# generate the malware files
+make_malware(6)

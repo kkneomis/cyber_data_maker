@@ -5,7 +5,7 @@ Part 1
 
 Question 1
 
-Several users reported having received suspicious emails from {{ malicious_sender }}. How many emails did this person send to your organizations?
+Several users reported having received suspicious emails from {{ malicious_sender }}. Who receive these emails?
 
 Question 2
 
@@ -25,10 +25,10 @@ Which IP addresses were asssociated with these links?
 
 Part 2
 
-It turns out that the downloaded files were ransomware! 0_0
-Your company's files have all been encrypted until you send the hackers 50 bitccoins. 
+You were able to capture some of the malware that was downloaded by your users. 
+They are obfuscated powershell scripts that attempt to download a new backdoor. 
+You have been told to block the delivery urls before any more malware is downloaded.
 
-Fortunately, the hackers forgot their keys in a "malware" folder provided. There are four key provided in zipped folders. 
-You must do some deobfuscation to get the key that will decrypt your data. Each key can be used to unzip the folder containing the next key.
+You must identify the links to the 2nd stage malware samples by deobfuscating the files in the malware folder.
 
 Good luck!
