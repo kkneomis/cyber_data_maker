@@ -17,6 +17,55 @@ It shows students that playing defense is actually pretty fun!
   * Some malware to deofuscate
 * A set of questions for students to answer
 
+
+
+
+So far, there is only one scenario and it goes like this:
+An adversary sends malicious emails to the employees of a company. Some of the employees click on the emails. Malware is delivered to those employees. 
+
+All events in the scenario can be found in the provided logs. In addition, the timestamps of events should match.
+
+
+## Example Challenge
+
+One example prompt could be:
+
+```
+You are a cybersecurity analyst at Daily Bugle, The Daily Bugle is a media organization, which engages in creating, collecting, and distributing news and information. It includes newspapers, print, and digital products, and mobile applications..
+
+Part 1
+
+Question 1
+Several users reported having received suspicious emails from twitterdevice@protonmail.com. Who did this sender send messages to?
+
+Question 2
+Some of these emails were blocked by your spam filters. Which of your employees actually received the messages?
+
+Question 3
+What domains were used in the links contained in these suspicious emails?
+
+Question 4
+Which IP addresses were asssociated with these links?
+
+Question 5
+Which users clicked on these links?
+
+Question 6
+Are there any other email senders associated with this activity? What are those email addresses?
+
+
+Part 2
+
+You were able to capture some of the malware that was downloaded by your users. 
+They are obfuscated powershell scripts that attempt to download a new backdoor. 
+You have been told to block the delivery urls before any more malware is downloaded.
+
+You must identify the links to the 2nd stage malware samples by deobfuscating the files in the malware folder.
+```
+
+
+Example of the data structure:
+
 ```simeonkakpovi@urpwned-com:~/Documents/cyber/Dev/challenge_maker/output$ tree
 .
 ├── emails
@@ -31,14 +80,6 @@ It shows students that playing defense is actually pretty fun!
 ├── outbound_proxy_traffic.txt
 └── prompt.txt
 ```
-
-
-So far, there is only one scenario and it goes like this:
-An adversary sends malicious emails to the employees of a company. Some of the employees click on the emails. Malware is delivered to those employees. 
-
-All events in the scenario can be found in the provided logs. In addition, the timestamps of events should match.
-
-
 
 ## Setting Up
 
