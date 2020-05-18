@@ -10,11 +10,11 @@ It shows students that playing defense is actually pretty fun!
 # What you get:
 
 * A bundle of data containing:
- * A list of company employees
- * Mail logs
- * Email files for the accepted emails
- * Outbound web logs (from employee browsing)
- * Some malware to deofuscate
+  * A list of company employees
+  * Mail logs
+  * Email files for the accepted emails
+  * Outbound web logs (from employee browsing)
+  * Some malware to deofuscate
 * A set of questions for students to answer
 
 ```simeonkakpovi@urpwned-com:~/Documents/cyber/Dev/challenge_maker/output$ tree
