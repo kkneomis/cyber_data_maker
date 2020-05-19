@@ -21,7 +21,6 @@ def set_up_output_dir(OUTPUT_PATH):
     print('Created a new malware dir...')
 
 
-
 #============================================
 # Add metadata for the challenge
 #============================================
@@ -44,6 +43,9 @@ def make_questions(**config):
 
     company = config["company_info"]["company_name"]
     description = config["company_info"]["description"]
+    # picking a random malicious sender
+    # the problem is that when we have a number of logs
+    # not all of the senders are actually used
     malicious_sender = random.choice(config["mal_config"]["senders"])
 
     content = template.render(company=company,

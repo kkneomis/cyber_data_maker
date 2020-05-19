@@ -1,6 +1,7 @@
 import os
 import random
 import json 
+import math
 
 from datetime import datetime
 from tqdm import tqdm
@@ -42,7 +43,7 @@ except Exception as e:
 # Make the emails
 #============================================
 
-def gen_emails(count=100, malicious_emails=10, **config):
+def gen_emails(count=100, malicious_emails=10, block_rate=.3, **config):
     """
     Generate a list of email objects
     """
@@ -58,6 +59,18 @@ def gen_emails(count=100, malicious_emails=10, **config):
     
     # creating {num} number of emails and adding the mail log
     print("Generating %s email objects..." % count)
+
+    # The more emails we are generating, the more we want to
+    # spread the malicious ones out so that they are not 
+    # all bunched up at the front
+    spread_rate = 1/math.log(malicious_emails + 1)
+    print("spread rate is %f" % spread_rate)
+
+    # We want to make sure there is at least one malicious email that gets through
+    # Let's keep track of these and interfere if that doesn't happen by chance
+    accepted_malicious_email_count = 0
+
+
     for i in tqdm(range(count)):
         emailtype = ""
         is_malicious = False
@@ -65,16 +78,18 @@ def gen_emails(count=100, malicious_emails=10, **config):
         time = clock.get_time()
 
         mailtype = random.random()
-        if mailtype <= .2 and malicious_emails > 0:   # Is malicious
+        
+        if mailtype <= spread_rate and malicious_emails > 0:   # Is malicious
             # generate an external malicious email
             # this will happen 20% of the time until we have generate
             # the specified number of malicious emails we need
+            # the point of this is to spread out the emails
             is_malicious = True
             malicious_emails -= 1
             emailtype = "malware"
-        elif mailtype <= .8:  #Is Internal
+        elif mailtype <= .5:  #Is Internal
             # generate an internal email
-            # this will occur 60% of the time
+            # this will occur 50% of the time
             is_internal = True
             emailtype = "internal"
         else: #Is External
@@ -85,7 +100,11 @@ def gen_emails(count=100, malicious_emails=10, **config):
         
         # take the configs generated above and
         # create the email object
-        email = do_email(time, emailtype, hosts, mal_config)
+        email = do_email(time, emailtype, hosts, mal_config, block_rate=block_rate)
+
+        # Increment the counter everytime we allow a malicious email
+        if emailtype == "malware" and email.result == "Accepted":
+            accepted_malicious_email_count += 1
 
         # Save accepted Emails to file
         # using the jinja templating engine
@@ -113,11 +132,13 @@ def gen_emails(count=100, malicious_emails=10, **config):
 
         clock.tick()
 
+    print("allowed %d malicious emails" % accepted_malicious_email_count)  
+
     # return the objects anyway for post-processing (clicking links)
     return MAIL_LOG
         
         
-def do_email(date_time, emailtype, hosts, mal_config):
+def do_email(date_time, emailtype, hosts, mal_config, block_rate=.3):
     """
     Generate an email object given a time and email type
     Email type can be internal, exaternal, or malicious
@@ -135,12 +156,12 @@ def do_email(date_time, emailtype, hosts, mal_config):
         elif emailtype == "external":
             # create a benign external email
             sender = fake.ascii_email()
-            result = random.choices(["Accepted", "Blocked"], [.7, .3], k=1)[0]
+            result = random.choices(["Accepted", "Blocked"], [1-block_rate, block_rate], k=1)[0]
             link = None
         else:
             # create a malicious email
             sender = random.choice(mal_config["senders"])
-            result = random.choices(["Accepted", "Blocked"], [.6, .4], k=1)[0]
+            result = random.choices(["Accepted", "Blocked"], [1-block_rate, block_rate], k=1)[0]
             # overide the gerical links created in the email class
             # using one of the links in the malicious config
             link = random.choice(mal_config["links"])["url"]

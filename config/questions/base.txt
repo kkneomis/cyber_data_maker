@@ -4,24 +4,23 @@ You are a cybersecurity analyst at {{ company }}, {{ description }}.
 Part 1
 
 Question 1
-
-Several users reported having received suspicious emails from {{ malicious_sender }}. Who receive these emails?
+Several users reported having received suspicious emails from {{ malicious_sender }}. Who did this sender send messages to?
 
 Question 2
-
-Some of these emails were blocked by your spam filters. How many emails from this sender were delivered to users?
+Some of these emails were blocked by your spam filters. Which of your employees actually received the messages?
 
 Question 3
-
 What domains were used in the links contained in these suspicious emails?
 
 Question 4
-
-Which users clicked on these links?
+Which IP addresses were asssociated with these links?
 
 Question 5
+Which users clicked on these links?
 
-Which IP addresses were asssociated with these links?
+Question 6
+Are there any other email senders associated with this activity? What are those email addresses?
+
 
 Part 2
 

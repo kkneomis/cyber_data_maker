@@ -53,7 +53,7 @@ def gen_browsing(count=100, **config):
     return WEB_EVENTS
 
 
-def click_links(MAIL_LOGS, **config):
+def click_links(MAIL_LOGS, CLICK_RATE=.7, **config):
     """
     Given a list of json mail events, click the links in object
     """
@@ -82,7 +82,7 @@ def click_links(MAIL_LOGS, **config):
     for email in MAIL_LOGS:
         click = random.random()
         # There is a 70% chance of users clicking each link
-        if click < .7:
+        if click < CLICK_RATE:
             if email.link and email.result == "Accepted":
                 user = get_user_from_email(email.recipient)
                 src_ip = user["ip_addr"]

@@ -5,6 +5,19 @@ import base64
 import ipaddress
 import shutil
 
+from faker import Faker
+from faker.providers import internet
+from faker.providers import person
+from faker.providers import user_agent
+
+
+# instantiate faker
+fake = Faker()
+fake.add_provider(internet)
+fake.add_provider(person)
+fake.add_provider(user_agent)
+
+
 WORD_CLOUD = ["account", "site", "user", "microsoft", "twitter", "it", "reset", "download", "org", "digital",
               "invoice", "payment", "secure", "notice", "critical", "financial", "bank", "service",
               "business", "portal", "browse", "legit", "defender", "login", "share", "amazon", "device"]
@@ -37,14 +50,8 @@ def gen_sender_addr():
     return sender_addr
 
 
-def gen_senders():
-    num = random.randint(1, 5)
-    senders = []
-    for _ in range(num):
-        senders.append(
-            gen_sender_addr()
-        )
-    return senders
+def gen_senders(senders_count=5):
+    return [gen_sender_addr() for n in range(senders_count)]
 
 
 def gen_link():
@@ -53,23 +60,17 @@ def gen_link():
     import re
     pre = random.choice(["http://",
                          "https://",
-                         "www.",
-                         "http://wwww.",
-                         "https://www.", ""])
+                         "http://www.",
+                         "https://www."])
     tld = random.choice([".com", ".org", ".net", ".co", ".info", ".co.uk"])
     domain = "".join(random.sample(WORD_CLOUD, 3))
 
     request = "".join(random.sample(WORD_CLOUD, 3))
     encodedBytes = base64.b64encode(request.encode("utf-8"))
-    request = str(encodedBytes)
+    request = encodedBytes.decode('utf-8')
 
     link = pre + domain + tld + "/" + request
     return link
-
-
-def gen_ip():
-    """Create a dummy IP addr"""
-    return ".".join(map(str, (random.randint(0, 255) for _ in range(4))))
 
 
 def gen_links():
@@ -77,12 +78,10 @@ def gen_links():
     num = random.randint(2, 7)
     links = []
     for _ in range(num):
-        links.append(
-            {
+        links.append({
                 "url": gen_link(),
-                "ip": gen_ip()
-            }
-        )
+                "ip": fake.ipv4_public()
+            })
 
     return links
 
@@ -103,14 +102,14 @@ def gen_email_addr(name):
     pass
 
 
-def gen_users():
+def gen_users(count_employees=10):
     with open("config/general/simulation/companies.json") as f:
         data = json.loads(f.read())
 
-    ip = ipaddress.ip_address(u'192.168.84.1')
+    ip = ipaddress.ip_address(fake.ipv4_private())
     company = random.choice(data)
     domain = "".join(company["company_name"].split(" ")).lower() + ".com"
-    employees = company["employees"]
+    employees = [fake.name() for n in range(count_employees)]
     users = []
 
     for employee in employees:
@@ -118,7 +117,7 @@ def gen_users():
         user["name"] = employee
         user["email_addr"] = ".".join(
             employee.split(" ")).lower() + "@" + domain
-        user["user_agent"] = get_user_agent()
+        user["user_agent"] = fake.user_agent()
         user["ip_addr"] = str(ip)
         ip += 1
         users.append(user)
@@ -138,19 +137,21 @@ def set_up_output_dir(OUTPUT_PATH):
     #    print('Error while deleting directory')
     os.mkdir(OUTPUT_PATH)
  
-def run_simulation():
+def run_simulation(level):
     malicious_config = {}
     company_info = {}
 
+    subject_count = int(level/2)
+
     set_up_output_dir('config/changeme/simulated')
 
-    malicious_config["blocked_subjects"] = get_subject(5)
-    malicious_config["accepted_subjects"] = get_subject(2)
-    malicious_config["senders"] = gen_senders()
+    malicious_config["blocked_subjects"] = get_subject(subject_count)
+    malicious_config["accepted_subjects"] = get_subject(subject_count)
+    malicious_config["senders"] = gen_senders(min(level, 20))
     malicious_config["reply_to"] = [gen_sender_addr()]
     malicious_config["links"] = gen_links()
 
-    company_info = gen_users()
+    company_info = gen_users(count_employees=max(level, 5))
 
     with open('config/changeme/simulated/company.json', 'w+') as f:
         f.write(json.dumps(company_info, indent=4))
