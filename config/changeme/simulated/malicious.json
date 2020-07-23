@@ -1,40 +1,44 @@
 {
     "blocked_subjects": [
-        "Amazon: We tried to deliver your package today",
-        "Google: Please Complete the Required Steps",
-        "Updated Employee Benefits",
-        "Verizon: Security Update",
-        "Payroll"
+        "Office 365: Medium-severity alert: Unusual volume of file deletion",
+        "Purchase",
+        "Donation for you",
+        "IT: Ransomware Scan",
+        "Microsoft Teams: Please authenticate your account"
     ],
     "accepted_subjects": [
-        "Staff Review 2018",
-        "Request"
+        "Cisco Webex: Your account is blocked",
+        "Notice of payment to",
+        "IT: Ransomware Scan",
+        "Coinbase: Important Please Resolve Error Now",
+        "Hello"
     ],
     "senders": [
-        "financialbank@hotmail.com",
-        "servicenotice@hotmail.com",
-        "resetdevice@yahoo.com",
-        "userbank@protonmail.com"
+        "itlegit@protonmail.com",
+        "paymentsite@yahoo.com",
+        "microsoftbusiness@hotmail.com",
+        "browseshare@yahoo.com",
+        "serviceinvoice@protonmail.com",
+        "shareit@yahoo.com",
+        "securefinancial@hotmail.com",
+        "defenderbusiness@yahoo.com",
+        "loginshare@protonmail.com",
+        "orgbusiness@hotmail.com"
     ],
     "reply_to": [
-        "noticebusiness@yahoo.com"
+        "bankinvoice@hotmail.com"
     ],
     "links": [
         {
-            "url": "https://serviceuserlogin.co/b'aXRzZXJ2aWNlbWljcm9zb2Z0'",
-            "ip": "217.247.38.187"
+            "url": "https://www.legitserviceorg.org/agent.exe",
+            "ip": "54.148.234.38"
         },
         {
-            "url": "https://businessservicelogin.com/b'YnVzaW5lc3N0d2l0dGVyc2VjdXJl'",
-            "ip": "54.158.45.13"
-        },
-        {
-            "url": "http://orgbusinessit.org/b'YmFua3R3aXR0ZXJpdA=='",
-            "ip": "68.89.150.41"
-        },
-        {
-            "url": "http://downloadbrowseshare.com/b'cGF5bWVudHJlc2V0c2l0ZQ=='",
-            "ip": "51.109.138.20"
+            "url": "https://www.deviceshareservice.info/president.exe",
+            "ip": "223.52.15.187"
         }
+    ],
+    "c2": [
+        "213.136.59.117"
     ]
 }

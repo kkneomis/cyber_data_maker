@@ -1,9 +1,10 @@
 import os
 import random, json
+import urllib.parse
 from datetime import datetime
 from dateutil.parser import parse
 from datetime import timedelta
-
+ 
 from tqdm import tqdm
 
 from faker import Faker
@@ -58,6 +59,7 @@ def click_links(MAIL_LOGS, CLICK_RATE=.7, **config):
     Given a list of json mail events, click the links in object
     """
     WEB_EVENTS = []
+    INFECTED_HOSTS = []
     hosts = config["hosts"]
     mal_config = config["mal_config"]
 
@@ -89,13 +91,67 @@ def click_links(MAIL_LOGS, CLICK_RATE=.7, **config):
                 user_agent = user["user_agent"]
                 url = email.link
                 dst_ip = get_link_ip(url)
+                time = parse(email.time) + timedelta(seconds=random.randint(0, 100))
                 if not dst_ip:
                     # this was a made up email domain. it is not mapped to an IP in our file of domains
                     # give it a fake IP on the spot
                     ip = fake.ipv4
-                time = parse(email.time) + timedelta(seconds=random.randint(0, 100))
+                else:
+                    # we want to log defined malicious links so these hosts can beacon out later
+                    infected_host = {
+                        "src_ip":src_ip,
+                        "user_agent":user_agent,
+                        "time":time
+                    }
+                    INFECTED_HOSTS.append(infected_host)
                 new_event = OutboundEvent(time=time, src_ip=src_ip, dst_ip=dst_ip,  url=url, user_agent=user_agent).stringify()
                 WEB_EVENTS.append(new_event)
 
-    return WEB_EVENTS
+    return WEB_EVENTS, INFECTED_HOSTS
+
+
+def beacon_out(host, **config):
+    """
+    This function emulates a compromised machine beaconing to a c2 domain
+    Given a command and control domain, beacon out to it periodically
+    """
+    mal_config = config["mal_config"]
+    src_ip=host["src_ip"]
+    dst_ip= random.choice(mal_config["c2"])
+    c2_host = "http://" + dst_ip
+    #c2_domain =  random.choice(**config["c2"])
+    user_agent=host["user_agent"]
+    start_time=host["time"]
+
+    # reference http://lpc1.clpccd.cc.ca.us/lpc/mdaoud/CNT7501/NETLABS/Ethical_Hacking_Lab_01.pdf
+    # more these to come later - result of additional research
+    commands = [
+        "net view",
+        "net view /domain",
+        "net view /domain:Administrators",
+    ]
+    clock = Clock(start=start_time, interval=4000)
+    beacon_events = []
+
+    for command in commands:
+        clock.tick()
+        # we can't have allll of the data so we need to settle here
+        # there will be no responses provide, just web requests
+        # so here is what the c2 will look like:
+        # c2domain.com/listner.php?c={command} (where the command is encoded somehow)
+        # followed by the response to the command
+        # let's try a sequence
+        # 1. request to c2domain
+        #     c2domain.com/listener.php?c={syn, hostname}
+        # 2. interpret command 2
+        #     c2domain.com/listener.php?c={ack, whoami}
+        #     c2domain.com/listener.php?c={hostname: hostname}
+        command = '/listener.php?c={"syn": "%s"}' % command
+        command = urllib.parse.quote(command)
+        new_event = OutboundEvent(time=clock.get_time(), src_ip=src_ip, dst_ip=dst_ip,  url=c2_host, 
+                                  request=command, user_agent=user_agent).stringify()
+        beacon_events.append(new_event)
+
+    return beacon_events
+
 

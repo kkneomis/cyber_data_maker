@@ -15,7 +15,7 @@ STATUS_CODES = ["202", "301", "302", "404", "403"]
 
 class OutboundEvent:
 
-    def __init__(self, time, src_ip, dst_ip, user_agent, url):
+    def __init__(self, time, src_ip, dst_ip, user_agent, url, request=None):
         """Set initial values"""
         self.time = time
         self.src_ip = src_ip
@@ -27,7 +27,8 @@ class OutboundEvent:
         self.url = url or fake.uri()
         parsed_link = url.split("//")[-1].split("/")
         self.host = parsed_link[0].split('?')[0]
-        self.request = '/'.join(parsed_link[1:])
+
+        self.request = request or '/'.join(parsed_link[1:])
 
 
     def set_method(self):

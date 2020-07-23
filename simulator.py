@@ -9,13 +9,14 @@ from faker import Faker
 from faker.providers import internet
 from faker.providers import person
 from faker.providers import user_agent
-
+from faker.providers import file
 
 # instantiate faker
 fake = Faker()
 fake.add_provider(internet)
 fake.add_provider(person)
 fake.add_provider(user_agent)
+fake.add_provider(file)
 
 
 WORD_CLOUD = ["account", "site", "user", "microsoft", "twitter", "it", "reset", "download", "org", "digital",
@@ -65,9 +66,11 @@ def gen_link():
     tld = random.choice([".com", ".org", ".net", ".co", ".info", ".co.uk"])
     domain = "".join(random.sample(WORD_CLOUD, 3))
 
-    request = "".join(random.sample(WORD_CLOUD, 3))
-    encodedBytes = base64.b64encode(request.encode("utf-8"))
-    request = encodedBytes.decode('utf-8')
+    request = fake.file_name(category="office", extension="exe")
+    
+    #"".join(random.sample(WORD_CLOUD, 3))
+    #encodedBytes = base64.b64encode(request.encode("utf-8"))
+    #request = encodedBytes.decode('utf-8')
 
     link = pre + domain + tld + "/" + request
     return link
@@ -150,6 +153,7 @@ def run_simulation(level):
     malicious_config["senders"] = gen_senders(min(level, 20))
     malicious_config["reply_to"] = [gen_sender_addr()]
     malicious_config["links"] = gen_links()
+    malicious_config["c2"] = [fake.ipv4_public()]
 
     company_info = gen_users(count_employees=max(level, 5))
 

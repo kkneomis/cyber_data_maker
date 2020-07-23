@@ -59,8 +59,9 @@ def make_questions(**config):
 def list_to_file(EVENTS, filepath):
     """
     Write an input list of file to disk at specfied filename
+    Append if file already exists
     """
-    with open(filepath, 'w+') as f:
+    with open(filepath, 'a') as f:
         for event in EVENTS:
             f.write(event)
             f.write("\n")

@@ -8,6 +8,7 @@ from modules.emails.generateEmail import gen_emails
 from modules.inbound_browsing.genInboundTraffic import gen_inbound_traffic
 from modules.outbound_browsing.genOutboundTraffic import gen_browsing
 from modules.outbound_browsing.genOutboundTraffic import click_links
+from modules.outbound_browsing.genOutboundTraffic import beacon_out
 from modules.malware.make_malware import make_malware
 
 from utils import *
@@ -21,7 +22,7 @@ parser = argparse.ArgumentParser(description='')
 parser.add_argument(
     '--level', '-l', type=int, default=10,
                     help='Difficulty level of the challenge. This determines the quantity of logs generated \
-                         an the complexity of concepts that are tested.')
+                         and the complexity of concepts that are tested.')
 parser.add_argument(
     '--config_path', type=str, default="config/changeme/default/",
                     help='Use a custom config. Path to config containing employee and malicous config.\
@@ -103,14 +104,22 @@ emails = gen_emails(count=EMAIL_COUNT, malicious_emails=MALICIOUS_EMAIL_COUNT, b
 ### Make generic outbound web traffic
 browsing_noise = gen_browsing(count=WEB_BROWSING_COUNT, **config)
 ### Get outbound  traffic from user clicking links emails
-click_traffic = click_links(emails, CLICK_RATE=1, **config)
+click_traffic, infected_hosts = click_links(emails, CLICK_RATE=1, **config)
 
 ### Add traffic from emails to the noise.
-### Write all this to file
 all_outbound_traffic = click_traffic + browsing_noise
 all_outbound_traffic.sort()
+make_malware(config["mal_config"]["c2"]) 
+
+# Beacon out to the c2!!!!
+print("Generating beacons for clickers")
+all_beacon_traffic = [beacon_out(host, **config) for host in infected_hosts]
+# all_beacon_traffic is a list of lists, flat
+all_beacon_traffic = [event for host_trafffic in all_beacon_traffic for event in host_trafffic]
+
+### Write all this to file
+print("Adding beacon traffic to all outbound traffic")
+all_outbound_traffic  += all_beacon_traffic
+all_outbound_traffic.sort()
+print("Writing a to outbound proxy file")
 list_to_file(all_outbound_traffic, 'output/outbound_proxy_traffic.txt')
-
-
-# generate the malware files
-make_malware(MALWARE_COUNT)
